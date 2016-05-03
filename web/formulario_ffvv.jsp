@@ -572,7 +572,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Tenencia de Productos IB</td>
+                                            <td>Productos actuales IB</td>
                                             <td>
                                                 <br>
                                                 <input type="checkbox" value="cts" id="cts" name="cts"> CTS<br>
