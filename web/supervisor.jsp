@@ -9,15 +9,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Formulario</title>
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
-        <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
         <script src="js/jquery.min.js" type="text/javascript"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <script src="js/formulario.js" type="text/javascript"></script>
-        <script src="js/calculadora.js" type="text/javascript"></script>
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
         <script src="js/tables_supervisor.js" type="text/javascript"></script>
+        <script src="js/calculadora.js" type="text/javascript"></script>
         <script>
             <%
                 Cookie cookie = null;
@@ -141,11 +137,11 @@
             <br>
             <div style="background-color: #00A94E;height: 50px;text-align:center">
                 <table height="50" align="center" >
-                  <tr>
-                      <td style="color: #ffffff;font-size: 22px"><b>¡Hola! <%=c.getNombre(user)%></b></td>
-                  </tr>
-              </table>
-          </div>
+                    <tr>
+                        <td style="color: #ffffff;font-size: 22px"><b>¡Hola! <%=c.getNombre(user)%></b></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </center>
     <br>
@@ -163,7 +159,7 @@
                 <!--Tab de solicitudes pendientes-->
                 <div id="enviadas" class="tab-pane fade in active" style="margin-top: 15px">
                     <div class="container" style="overflow-y: scroll;width:100%"> 
-                        <div class="input-group">
+                        <div class="input-group"> 
                             <span class="input-group-addon" onclick="location.reload();">
                                 <span class="glyphicon glyphicon-refresh"></span>
                                 Actualizar
@@ -171,7 +167,7 @@
                             <input id="f1" type="text" class="form-control" placeholder="Ingrese consulta...">
                         </div>
                         <table class="table" border="1">
-                            <thead>
+                            <thead class="filters">
                                 <tr>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
                                         <b>Fecha de Solicitud</b>
@@ -190,7 +186,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width: 100%">    
                         <table class="table" border="1">
-                            <tbody class="searchable1">
+                            <tbody  class="searchable1" data-filter="#f1">
                             <c:forEach var="row" items="${result.rows}">
                                 <tr style="text-align: center">
                                     <td style="font-size: 12px;vertical-align:middle;" width="10%">
@@ -232,7 +228,7 @@
                         <input id="f2" type="text" class="form-control" placeholder="Ingrese consulta...">
                     </div>
                     <table class="table" border="1">
-                        <thead>
+                        <thead  class="filters">
                             <tr>
 
                                 <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
@@ -252,7 +248,7 @@
                 </div>
                 <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
                     <table class="table" border="1">
-                        <tbody class="searchable2">
+                        <tbody class="searchable2" data-filter="#f2">
                             <c:forEach var="row" items="${aceptada.rows}">
                                 <tr style="text-align: center">
                                     <td style="font-size: 12px;vertical-align:middle;" width="10%">
@@ -295,7 +291,7 @@
                         <input id="f3" type="text" class="form-control" placeholder="Ingrese consulta...">
                     </div>
                     <table class="table" border="1">
-                        <thead>
+                        <thead  class="filters">
                             <tr>
                                 <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
                                     <b>Fecha de Aprobación</b>
