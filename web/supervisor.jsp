@@ -17,6 +17,7 @@
         <script src="js/formulario.js" type="text/javascript"></script>
         <script src="js/calculadora.js" type="text/javascript"></script>
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
+        <script src="js/tables_supervisor.js" type="text/javascript"></script>
         <script>
             <%
                 Cookie cookie = null;
@@ -189,7 +190,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width: 100%">    
                         <table class="table" border="1">
-                            <tbody class="searchable">
+                            <tbody class="searchable1">
                             <c:forEach var="row" items="${result.rows}">
                                 <tr style="text-align: center">
                                     <td style="font-size: 12px;vertical-align:middle;" width="10%">
@@ -251,7 +252,7 @@
                 </div>
                 <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
                     <table class="table" border="1">
-                        <tbody class="searchable1">
+                        <tbody class="searchable2">
                             <c:forEach var="row" items="${aceptada.rows}">
                                 <tr style="text-align: center">
                                     <td style="font-size: 12px;vertical-align:middle;" width="10%">

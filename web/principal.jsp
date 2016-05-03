@@ -253,7 +253,7 @@
                         </div>
                         <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
                             <table class="table" border="1">
-                                <tbody class="searchable" data-filter="#f1">
+                                <tbody class="searchable1" data-filter="#f1">
                                 <c:forEach var="a" items="${result.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="inicio.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
@@ -316,7 +316,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
                         <table class="table" border="1">
-                            <tbody class="searchable1" data-filter="#f2">
+                            <tbody class="searchable2" data-filter="#f2">
                                 <c:forEach var="a" items="${repe_red.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_ffvv.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
@@ -379,7 +379,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
                         <table class="table" border="1">
-                            <tbody class="searchable2" data-filter="#f3">
+                            <tbody class="searchable3" data-filter="#f3">
                                 <c:forEach var="a" items="${res.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%"><a href="inicio_ffvv.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
@@ -442,7 +442,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
                         <table class="table" border="1">
-                            <tbody class="searchable3" data-filter="#f4">
+                            <tbody class="searchable4" data-filter="#f4">
                                 <c:forEach var="a" items="${repe_ffvv.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_ffvv.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
@@ -503,7 +503,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;;max-height: 600px;width:100%">
                         <table class="table" border="1" id="datos">
-                            <tbody class="searchable4" data-filter="#f5">
+                            <tbody class="searchable5" data-filter="#f5">
                                 <c:forEach var="a" items="${aceptada.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
@@ -553,7 +553,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
                         <table class="table" border="1" id="datos">
-                            <tbody class="searchable5" data-filter="#f6">
+                            <tbody class="searchable6" data-filter="#f6">
                                 <c:forEach var="a" items="${contra.rows}">
 
                                     <tr style="text-align: center">

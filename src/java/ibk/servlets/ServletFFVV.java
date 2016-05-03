@@ -99,7 +99,7 @@ public class ServletFFVV extends HttpServlet {
             Conexion c = new Conexion();
             boolean ok = false;
             boolean repe = c.validarRepeticiones(dni, prestamo, tasa);
-            if (repe == true) {
+            if (repe == false) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
                     ok = c.registroSolicitudFFVV(nombre.toUpperCase(), sh, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario);
                     c.updateVencimiento();
