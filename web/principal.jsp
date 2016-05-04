@@ -275,7 +275,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -338,7 +338,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -401,7 +401,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
                                     </tr>
@@ -464,7 +464,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -507,7 +507,7 @@
                                 <c:forEach var="a" items="${aceptada.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
-                                            <a href="respondidas_sup.jsp?cod=${a.Id}">${a.aprobacion}</a>
+                                            <a href="respondidas_ev.jsp?cod=${a.Id}">${a.aprobacion}</a>
                                         </td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Usuario}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Canal}</td>
@@ -515,7 +515,7 @@
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_aceptada}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
                                     </tr>
@@ -558,7 +558,7 @@
 
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px" width="10%">
-                                            <a href="respondidas_sup.jsp?cod=${a.Id}">${a.aprobacion}</a>
+                                            <a href="respondidas_ev.jsp?cod=${a.Id}">${a.aprobacion}</a>
                                         </td>
                                         <td style=";font-size: 12px" width="8%">${a.Usuario}</td>
                                         <td style=";font-size: 12px" width="10%">${a.Canal}</td>
@@ -566,7 +566,7 @@
                                         <td style=";font-size: 12px" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style=";font-size: 12px" width="8%">${a.Plazo}</td>
                                         <td style=";font-size: 12px" width="12%">${a.Motivo}</td>
-                                        <td style=";font-size: 12px" width="10%">${a.Producto}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Producto_origen}</td>
                                         <td style=";font-size: 12px" width="10%">${a.prestamo}</td>
                                         <td style=";font-size: 12px">${a.Moneda}</td>
                                     </tr>
