@@ -606,7 +606,7 @@ public class Conexion {
     /**
      * solicitudes de RED *
      */
-    public boolean registroSolicitud2Files(String nombre, String r1, String r2, String dni, String prestamo, String cuotaI, String adq, String plazo, String tasaSol, String valorI, String moneda, String prod, String medio, String mes, String tipo, String vivienda, String motivo, String segmento, String cruce, String user, String coment) {
+    public boolean registroSolicitud2Files(String nombre, String r1, String r2, String dni, String prestamo, String cuotaI, String adq, String plazo, String tasaSol, String valorI, String moneda, String prod, String medio, String mes, String tipo, String vivienda, String motivo, String segmento, String cruce, String user, String coment,String prod_origen) {
 
         boolean ok = false;
         int len1;
@@ -642,7 +642,7 @@ public class Conexion {
                     + ",[Archivo1]"
                     + ",[name1]"
                     + ",[Archivo2]"
-                    + ",[name2])"
+                    + ",[name2],[Producto_origen])"
                     + "     VALUES"
                     + "('" + nombre + "'"
                     + ",'" + dni + "'"
@@ -666,7 +666,7 @@ public class Conexion {
                     + ",getdate()"
                     + ",'" + coment + "'"
                     + ",1"
-                    + ",?,?,?,?)";
+                    + ",?,?,?,?,'"+prod_origen+"')";
 
             File f1 = new File(r1);
             File f2 = new File(r2);
@@ -701,7 +701,7 @@ public class Conexion {
     }
 
     //guarda el formulario con 1 solo file
-    public boolean registro1File(String nombre, String r1, String dni, String prestamo, String cuotaI, String adq, String plazo, String tasaSol, String valorI, String moneda, String prod, String medio, String mes, String tipo, String vivienda, String motivo, String segmento, String cruce, String user, String coment) {
+    public boolean registro1File(String nombre, String r1, String dni, String prestamo, String cuotaI, String adq, String plazo, String tasaSol, String valorI, String moneda, String prod, String medio, String mes, String tipo, String vivienda, String motivo, String segmento, String cruce, String user, String coment,String prod_origen) {
 
         boolean ok = false;
         int len1;
@@ -734,7 +734,8 @@ public class Conexion {
                     + ",[comentF]"
                     + ",[Cont]"
                     + ",[Archivo1]"
-                    + ",[name1])"
+                    + ",[name1]"
+                    + ",[Producto_origen])"
                     + "     VALUES"
                     + "('" + nombre + "'"
                     + ",'" + dni + "'"
@@ -758,7 +759,7 @@ public class Conexion {
                     + ",getdate()"
                     + ",'" + coment + "'"
                     + ",1"
-                    + ",?,?)";
+                    + ",?,?,'"+prod_origen+"')";
 
             File f1 = new File(r1);
 
@@ -788,7 +789,7 @@ public class Conexion {
     }
 
     //guarda el formulario sin ningun file añadido
-    public boolean registroSolicitud(String nombre, String dni, String prestamo, String cuotaI, String adq, String plazo, String tasaSol, String valorI, String moneda, String prod, String medio, String mes, String tipo, String vivienda, String motivo, String segmento, String cruce, String user, String coment) {
+    public boolean registroSolicitud(String nombre, String dni, String prestamo, String cuotaI, String adq, String plazo, String tasaSol, String valorI, String moneda, String prod, String medio, String mes, String tipo, String vivienda, String motivo, String segmento, String cruce, String user, String coment,String prod_origen) {
 
         boolean ok = false;
         try {
@@ -817,7 +818,8 @@ public class Conexion {
                     + ",[Usuario]"
                     + ",[Fecha_Solicitud]"
                     + ",[comentF]"
-                    + ",[Cont])"
+                    + ",[Cont]"
+                    + ",[Producto_origen])"
                     + "     VALUES"
                     + "('" + nombre + "'"
                     + ",'" + dni + "'"
@@ -840,7 +842,7 @@ public class Conexion {
                     + ",'" + user + "'"
                     + ",getdate()"
                     + ",'" + coment + "'"
-                    + ",1)";
+                    + ",1,'"+prod_origen+"')";
 
             PreparedStatement ps = conn.prepareStatement(query);
 
@@ -923,7 +925,7 @@ public class Conexion {
                     + ",'" + coment + "'"
                     + ",1"
                     + ",?,?,?,?,'" + sh + "'"
-                    + ","+prod_origen+")";
+                    + ",'"+prod_origen+"')";
 
             File f1 = new File(r1);
             File f2 = new File(r2);
@@ -1018,7 +1020,7 @@ public class Conexion {
                     + ",'" + coment + "'"
                     + ",1"
                     + ",?,?,'" + sh + "'"
-                    + ","+prod_origen+")";
+                    + ",'"+prod_origen+"')";
 
             File f1 = new File(r1);
             System.out.println(r1);

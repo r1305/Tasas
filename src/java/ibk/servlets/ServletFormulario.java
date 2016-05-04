@@ -107,20 +107,20 @@ public class ServletFormulario extends HttpServlet {
             System.out.println(repe);
             if (repe == false) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
-                    ok = c.registroSolicitud(nombre.toUpperCase(),dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario);
+                    ok = c.registroSolicitud(nombre.toUpperCase(),dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
                     c.updateVencimiento();
                 } else if (a1.getSize() == 0) {
                     String f1 = writeFile(a2);
-                    ok = c.registro1File(nombre.toUpperCase(),f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario);
+                    ok = c.registro1File(nombre.toUpperCase(),f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 } else if (a2.getSize() == 0) {
                     String f1 = writeFile(a1);
-                    ok = c.registro1File(nombre.toUpperCase(),f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario);
+                    ok = c.registro1File(nombre.toUpperCase(),f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 } else {
                     String f1 = writeFile(a1);
                     String f2 = writeFile(a2);
-                    ok = c.registroSolicitud2Files(nombre.toUpperCase(),f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario);
+                    ok = c.registroSolicitud2Files(nombre.toUpperCase(),f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 }
             } else {
