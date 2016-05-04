@@ -7,9 +7,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <title>Solicitudes Pendientes</title>
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />        
-        <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
         <script src="js/jquery.min.js" type="text/javascript"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/principal.css" rel="stylesheet" type="text/css"/>
@@ -22,7 +19,7 @@
                 // Get an array of Cookies associated with this domain
                 cookies = request.getCookies();
                 String nombre = "";
-                for (int i = 0; i <cookies.length; i++) {
+                for (int i = 0; i < cookies.length; i++) {
                     if (cookies[i].getName().equals("user")) {
                         nombre = cookies[i].getValue();
                     }
@@ -181,7 +178,7 @@
             order by 1
         </sql:query>
         <!-- cabecera de página-->
-        <%Conexion c=new Conexion();%>
+        <%Conexion c = new Conexion();%>
     <center>
         <div class="main" role="main" style="width: 100%">
             <div class="header" style="width: 60%">
@@ -194,11 +191,11 @@
             <br>
             <div style="background-color: #00A94E;height: 50px;text-align:center">
                 <table height="50" align="center" >
-                  <tr>
-                      <td style="color: #ffffff;font-size: 22px"><b>¡Hola! <%=c.getNombre(user)%></b></td>
-                  </tr>
-              </table>
-          </div>
+                    <tr>
+                        <td style="color: #ffffff;font-size: 22px"><b>¡Hola! <%=c.getNombre(user)%></b></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </center>
     <br>
@@ -225,12 +222,10 @@
 
                         <div class="container" style="overflow-y: scroll;width:100%">
                             <div class="input-group"> 
-
                                 <span class="input-group-addon" onclick="location.reload();">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                     Actualizar
                                 </span>
-
                                 <input id="f1" type="text" class="form-control" placeholder="Ingrese consulta...">
                             </div>
                             <table class="table" border="1">
@@ -256,7 +251,7 @@
                                 <tbody class="searchable1" data-filter="#f1">
                                 <c:forEach var="a" items="${result.rows}">
                                     <tr style="text-align: center">
-                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="inicio.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
+                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="inicio.jsp?id=${a.Id}">${a.solicitud}</a>
                                             <c:choose>
                                                 <c:when test="${a.tiempo<=480}">
                                                     <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
@@ -275,7 +270,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -319,7 +314,7 @@
                             <tbody class="searchable2" data-filter="#f2">
                                 <c:forEach var="a" items="${repe_red.rows}">
                                     <tr style="text-align: center">
-                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_ffvv.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
+                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_ffvv.jsp?id=${a.Id}">${a.solicitud}</a>
                                             <c:choose>
                                                 <c:when test="${a.tiempo<=480}">
                                                     <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
@@ -338,7 +333,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -382,7 +377,7 @@
                             <tbody class="searchable3" data-filter="#f3">
                                 <c:forEach var="a" items="${res.rows}">
                                     <tr style="text-align: center">
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%"><a href="inicio_ffvv.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%"><a href="inicio_ffvv.jsp?id=${a.Id}">${a.solicitud}</a>
                                             <c:choose>
                                                 <c:when test="${a.tiempo<=480}">
                                                     <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
@@ -401,7 +396,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
                                     </tr>
@@ -412,7 +407,6 @@
                 </div>
                 <!-- Solicitudes repechajes de FFVV -->
                 <div id="repe_ffvv" class="tab-pane fade">
-
                     <div class="container" style="overflow-y: scroll;width:100%">
                         <div class="input-group"> 
 
@@ -445,7 +439,7 @@
                             <tbody class="searchable4" data-filter="#f4">
                                 <c:forEach var="a" items="${repe_ffvv.rows}">
                                     <tr style="text-align: center">
-                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_ffvv.jsp?id=${a.Id}&u=<%=user%>">${a.solicitud}</a>
+                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_ffvv.jsp?id=${a.Id}">${a.solicitud}</a>
                                             <c:choose>
                                                 <c:when test="${a.tiempo<=480}">
                                                     <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
@@ -464,7 +458,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -515,7 +509,7 @@
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_aceptada}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
                                     </tr>
@@ -566,7 +560,7 @@
                                         <td style=";font-size: 12px" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style=";font-size: 12px" width="8%">${a.Plazo}</td>
                                         <td style=";font-size: 12px" width="12%">${a.Motivo}</td>
-                                        <td style=";font-size: 12px" width="10%">${a.Producto_origen}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Producto}</td>
                                         <td style=";font-size: 12px" width="10%">${a.prestamo}</td>
                                         <td style=";font-size: 12px">${a.Moneda}</td>
                                     </tr>
