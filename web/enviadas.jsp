@@ -143,7 +143,7 @@
                         <tr>
                             <td>Producto</td>
                             <td>
-                                <input class="form-control" type='text' id='producto' style="text-align: center" value="${row.producto}" readonly="">
+                                <input class="form-control" type='text' id='producto' style="text-align: center" value="${row.producto_origen}" readonly="">
                             </td>
                         </tr>
                         <tr>

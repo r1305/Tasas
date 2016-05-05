@@ -207,7 +207,7 @@
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
                                     <td style=";font-size: 12px;text-align: center;padding-left: 3px;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Plazo}</td>
-                                    <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto}</td>
+                                    <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_ADQ}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td>                                  
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Motivo}</td>
@@ -258,7 +258,7 @@
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Plazo}</td>
-                                    <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto}</td>
+                                    <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_aceptada}</td>
                                     <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.dias}
                                         <c:choose>
@@ -321,7 +321,7 @@
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Plazo}</td>
-                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Aceptada}</td>
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td> 
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.dias}

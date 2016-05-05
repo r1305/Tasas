@@ -103,7 +103,7 @@
                     <tr>
                         <td style="vertical-align:middle;font-size: 14px"><br>Producto</td>
                         <td>
-                            <br><input type="text" id="prod" style="text-align: center" readonly="true" class="form-control" value="${row.Producto}">
+                            <br><input type="text" id="prod" style="text-align: center" readonly="true" class="form-control" value="${row.Producto_origen}">
                         </td>
 
 
