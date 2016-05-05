@@ -1355,7 +1355,7 @@ public class Conexion {
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.executeUpdate();
-            enviarMail(id);
+            enviarMailRechazados(id);
             updateVencimiento();
             ok = true;
 

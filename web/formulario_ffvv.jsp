@@ -59,12 +59,9 @@
         <sql:query dataSource="${snapshot}" var="a">
             select COUNT(*) as numero from Phoenix.Formulario where Estado='Aceptada' and [Usuario]='<%=user%>'
         </sql:query>
-        <!-- query para obtener la cantidad de solicitudes rechazadas del usuario logeado-->
+        <!-- query para obtener la cantidad de solicitudes contraOfertas del usuario logeado-->
         <sql:query dataSource="${snapshot}" var="r">
             select COUNT(*) as numero from Phoenix.Formulario where Estado='ContraOferta' and  [Usuario]='<%=user%>'
-        </sql:query>
-        <sql:query dataSource="${snapshot}" var="rechazadas">
-            select COUNT(*) as numero from Phoenix.Formulario where Estado='Rechazada' and  [Usuario]='<%=user%>'
         </sql:query>
         <!--Query para mostrar las solicitudes pendientes con formato de monedas y fechas-->
         <sql:query dataSource="${snapshot}" var="result">
@@ -151,8 +148,7 @@
             <br><br><ul class="nav nav-tabs nav-justified">
                 <li class="active"><a data-toggle="tab" href="#enviadas" style="color:#0060B3"><b>Enviadas (<c:forEach var="b" items="${n.rows}">${b.numero}</c:forEach>)</b></a></li>
                 <li><a data-toggle="tab" href="#aceptadas" style="color: #0060B3"><b>Aceptadas (<c:forEach var="b" items="${a.rows}">${b.numero}</c:forEach>)</b></a></li>
-                <li><a data-toggle="tab" href="#contraOfertas" style="color: #0060B3"><b>Contra Ofertas (<c:forEach var="b" items="${r.rows}">${b.numero}</c:forEach>)</b></a></li>
-                <li><a data-toggle="tab" href="#rechazadas" style="color: #0060B3"><b>Rechazadas (<c:forEach var="b" items="${rechazadas.rows}">${b.numero}</c:forEach>)</b></a></li>
+                <li><a data-toggle="tab" href="#contraOfertas" style="color: #0060B3"><b>Contra Ofertas (<c:forEach var="b" items="${r.rows}">${b.numero}</c:forEach>)</b></a></li>               
                     <li><a data-toggle="tab" href="#solicitud" style="color: #0060B3"><b>Solicitud</b></a></li>
                 </ul>
 

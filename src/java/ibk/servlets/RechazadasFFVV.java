@@ -39,7 +39,6 @@ public class RechazadasFFVV extends HttpServlet {
 
         Conexion con = new Conexion();
         boolean ok = con.rechazadasFFVV(user, id, comentario);
-        con.enviarMailRechazados(id);
         if (ok) {
             response.getWriter().write("success");
         } else {

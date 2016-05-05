@@ -270,7 +270,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -333,7 +333,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -396,7 +396,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
                                     </tr>
@@ -458,7 +458,7 @@
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
                                     </tr>
@@ -509,7 +509,7 @@
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_aceptada}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
                                         <td style=";font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
                                     </tr>
@@ -560,7 +560,7 @@
                                         <td style=";font-size: 12px" width="10%">${a.Tasa_Solicitada}</td>
                                         <td style=";font-size: 12px" width="8%">${a.Plazo}</td>
                                         <td style=";font-size: 12px" width="12%">${a.Motivo}</td>
-                                        <td style=";font-size: 12px" width="10%">${a.Producto}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Producto_origen}</td>
                                         <td style=";font-size: 12px" width="10%">${a.prestamo}</td>
                                         <td style=";font-size: 12px">${a.Moneda}</td>
                                     </tr>
