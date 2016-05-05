@@ -47,7 +47,8 @@ function rechazar() {
     var id = document.getElementById("id").value;
     var c = document.getElementById("comentario").value;
     var u = document.getElementById("u").value;
-    $.get
+    if(c!==""){
+        $.get
             ('RechazadasFFVV', {
                 id: id,
                 comentario: c,
@@ -60,6 +61,10 @@ function rechazar() {
                     alert("Ha ocurrido un error");
                 }
             });
+    }else{
+        alert("Ingrese un comentario porfavor");
+    }
+    
 }
 
 //descarga los archivos adjuntos en la ruta especifica
