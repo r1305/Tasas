@@ -188,7 +188,7 @@
                                 <c:forEach var="row" items="${result.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
-                                            <a href="enviadas.jsp?cod=${row.Id}">${row.solicitud}</a>
+                                            <a href="enviadas_ffvv.jsp?cod=${row.Id}">${row.solicitud}</a>
                                         </td>
                                         <td style=";font-size: 12px;text-align: center;padding-right: -10px;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
@@ -245,7 +245,7 @@
                                 <c:forEach var="row" items="${aceptada.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
-                                            <a href="respondidas.jsp?cod=${row.Id}">${row.aprobacion}</a>
+                                            <a href="respondidas_ffvv.jsp?cod=${row.Id}">${row.aprobacion}</a>
                                         </td>
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
@@ -312,7 +312,7 @@
                                 <c:forEach var="row" items="${contra.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
-                                            <a href="respondidas.jsp?cod=${row.Id}">${row.aprobacion}</a>
+                                            <a href="respondidas_ffvv.jsp?cod=${row.Id}">${row.aprobacion}</a>
                                         </td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
@@ -378,7 +378,7 @@
                                 <c:forEach var="row" items="${recha.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
-                                            <a href="respondidas.jsp?cod=${row.Id}">${row.aprobacion}</a>
+                                            <a href="respondidas_ffvv.jsp?cod=${row.Id}">${row.aprobacion}</a>
                                         </td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
@@ -426,7 +426,7 @@
                                         <tr>
                                             <td>DNI</td>
                                             <td>
-                                                <input class="form-control" type='text' id='dni' name="dni" required="true" pattern="[0-9]{8}" placeholder="Ingrese DNI">
+                                                <input class="form-control" type='text' id='dni' name="dni" required="true" pattern="[0-9]" placeholder="Ingrese DNI">
                                                 <input type="text" value="<%=user%>" hidden="" name="user">
                                             </td>
                                         </tr>
@@ -437,7 +437,7 @@
                                                     <option>Alto</option>
                                                     <option>Medio</option>
                                                     <option>Bajo</option>
-                                                    <option>contra</option>
+                                                    <option>Rechazo</option>
                                                 </select>
                                             </td>
                                         </tr>
