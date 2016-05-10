@@ -426,7 +426,7 @@
                                         <tr>
                                             <td>DNI</td>
                                             <td>
-                                                <input class="form-control" type='text' id='dni' name="dni" required="true" pattern="[0-9]" placeholder="Ingrese DNI">
+                                                <input class="form-control" type='text' id='dni' name="dni" required="true" maxlength="10" placeholder="Ingrese DNI">
                                                 <input type="text" value="<%=user%>" hidden="" name="user">
                                             </td>
                                         </tr>

@@ -126,7 +126,7 @@ public class ServletFFVV extends HttpServlet {
             }
 
             if (ok) {
-                response.sendRedirect("formulario.jsp");
+                response.sendRedirect("formulario_ffvv.jsp");
             } else {
                 writer = response.getWriter();
                 writer.println("<center><br>"
