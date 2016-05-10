@@ -1381,13 +1381,12 @@ public class Conexion {
             ResultSet rs = state.executeQuery(query);
 
             while (rs.next()) {
-                if(rs.getString("Estado").equals("Rechazada")){
-                    ok=true;
-                }else{
-                    if(dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto)== rs.getFloat("Prestamo") && Float.parseFloat(tasa) != rs.getFloat("Tasa_solicitada")){
-                        ok=false;
-                    }
-                }                
+
+                if (rs.getString("Estado").equals("Rechazada")) {
+                    ok = true;
+                } else if (dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == rs.getFloat("Prestamo") && Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada")) {
+                    ok = false;
+                }
             }
         } catch (Exception e) {
             ok = false;
