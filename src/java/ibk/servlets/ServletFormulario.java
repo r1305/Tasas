@@ -104,8 +104,7 @@ public class ServletFormulario extends HttpServlet {
             Conexion c = new Conexion();
             boolean ok = false;
             boolean repe = c.validarRepeticiones(dni, prestamo, tasa);
-            System.out.println(repe);
-            if (repe == false) {
+            if (repe == true) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
                     ok = c.registroSolicitud(nombre.toUpperCase(),dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
                     c.updateVencimiento();
