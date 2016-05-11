@@ -434,6 +434,7 @@
                                             <td>Score Hipotecario</td>
                                             <td >
                                                 <select id="sh" name="sh" class="form-control">
+                                                    <option>Sin Score</option>
                                                     <option>Alto</option>
                                                     <option>Medio</option>
                                                     <option>Bajo</option>

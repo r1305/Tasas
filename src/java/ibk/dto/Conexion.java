@@ -1370,8 +1370,8 @@ public class Conexion {
         return ok;
     }
 
-    public boolean validarRepeticiones(String dni, String monto, String tasa) {
-        boolean ok = false;
+    public String validarRepeticiones(String dni, String monto, String tasa) {
+        String ok = "";
         Connection conn = getConnection();
         String query;
         try {
@@ -1379,16 +1379,21 @@ public class Conexion {
 
             Statement state = conn.createStatement();
             ResultSet rs = state.executeQuery(query);
-
-            while (rs.next()) {
-                if (rs.getString("Estado").equals("Rechazada")) {
-                    ok = true;
-                } else if (dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == rs.getFloat("Prestamo") && Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada")) {
-                    ok = false;
+            
+                while (rs.next()) {
+                    if (rs.getString("Estado").equals("Rechazada")) {
+                        ok = "ok";
+                        break;
+                    } else if (dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == rs.getFloat("Prestamo") && Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada")) {                        
+                        ok = "fail";
+                        break;
+                    }else{
+                        ok="ok";
+                    }
                 }
-            }
         } catch (Exception e) {
-            ok = false;
+            System.out.println(e);
+            ok="ok";
         }
         return ok;
     }

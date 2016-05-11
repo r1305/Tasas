@@ -34,6 +34,7 @@ public class ServletFFVV extends HttpServlet {
             throws ServletException, IOException {
         HttpSession ses = request.getSession(true);
         request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
         final Part a1 = request.getPart("f1");
         final Part a2 = request.getPart("f2");
@@ -98,8 +99,8 @@ public class ServletFFVV extends HttpServlet {
         } else {
             Conexion c = new Conexion();
             boolean ok = false;
-            boolean repe = c.validarRepeticiones(dni, prestamo, tasa);
-            if (repe == true) {
+            String repe = c.validarRepeticiones(dni, prestamo, tasa);
+            if (repe.equals("ok")|| repe.equals("")) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
                     ok = c.registroSolicitudFFVV(nombre.toUpperCase(), sh, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
                     c.updateVencimiento();

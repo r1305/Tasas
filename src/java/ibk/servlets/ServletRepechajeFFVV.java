@@ -29,7 +29,7 @@ public class ServletRepechajeFFVV extends HttpServlet {
             throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
-        
+        response.setContentType("text/html;charset=UTF-8");
         
         String id = request.getParameter("idR");
         String i = request.getParameter("idR");

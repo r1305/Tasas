@@ -30,12 +30,11 @@ public class ServletMail extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         
         int cod=Integer.parseInt(request.getParameter("cod"));
         Conexion con=new Conexion();
         boolean ok=con.enviarMail(cod);
-        System.out.println("*** Servlet Mail**** "+cod);
-        System.out.println("*** Servlet Mail**** "+ok);
         if(ok){
             response.getWriter().write("success");
         }else{
