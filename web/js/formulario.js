@@ -30,7 +30,6 @@ function ci(){
     if(c){
         $("#cuotaI").val("0");
         $('#prod').val('Compra deuda');
-        $('#prod').prop('disabled', 'disabled');
     }else{
         $("#prod").prop('disabled', false);
     }

@@ -40,7 +40,7 @@ public class ServletFormulario extends HttpServlet {
         final Part a2 = request.getPart("f2");
 
         String user = request.getParameter("user");
-        String nombre=request.getParameter("nombre");
+        String nombre = request.getParameter("nombre");
         String dni = request.getParameter("dni");
         String valorI = request.getParameter("valorI");
         String prestamo = request.getParameter("prestamo");
@@ -64,7 +64,6 @@ public class ServletFormulario extends HttpServlet {
         System.out.println(dni);
         System.out.println(prestamo);
         System.out.println(tasa);
-        
 
         if (cts != "" && cts != null) {
             cts = cts + ",";
@@ -82,15 +81,14 @@ public class ServletFormulario extends HttpServlet {
         } else {
             otros = "";
         }
-        
-        String p ="";
+
+        String p = "";
         if (prod.equals("Mi Vivienda") || prod.equals("Techo Propio")) {
-            p="Mi Vivienda";
-        }else{
-            p="Hipotecario";
+            p = "Mi Vivienda";
+        } else {
+            p = "Hipotecario";
         }
-        
-        
+
         String f = cruce.concat(cts + planilla + otros + ",");
         String cruceF = "";
         if (cts == "" && planilla == "" && otros == "") {
@@ -104,37 +102,52 @@ public class ServletFormulario extends HttpServlet {
         } else {
             Conexion c = new Conexion();
             boolean ok = false;
-            String repe = c.validarRepeticiones(dni, prestamo, tasa);
-            if (repe.equals("ok")||repe.equals(" ")) {
+            String repe = c.validarRepeticiones(dni, prestamo, tasa,prod);
+            if (repe.equals("ok") || repe.equals("")) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
-                    ok = c.registroSolicitud(nombre.toUpperCase(),dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
+                    ok = c.registroSolicitud(nombre.toUpperCase(), dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario, prod);
                     c.updateVencimiento();
                 } else if (a1.getSize() == 0) {
                     String f1 = writeFile(a2);
-                    ok = c.registro1File(nombre.toUpperCase(),f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
+                    ok = c.registro1File(nombre.toUpperCase(), f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario, prod);
                     c.updateVencimiento();
                 } else if (a2.getSize() == 0) {
                     String f1 = writeFile(a1);
-                    ok = c.registro1File(nombre.toUpperCase(),f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
+                    ok = c.registro1File(nombre.toUpperCase(), f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario, prod);
                     c.updateVencimiento();
                 } else {
                     String f1 = writeFile(a1);
                     String f2 = writeFile(a2);
-                    ok = c.registroSolicitud2Files(nombre.toUpperCase(),f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
+                    ok = c.registroSolicitud2Files(nombre.toUpperCase(), f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario, prod);
                     c.updateVencimiento();
                 }
-            } else {
-                writer = response.getWriter();
-                writer.println("<center><p style='font-size:22px'>Datos ingresados duplicados</p></center>");
             }
 
             if (ok) {
                 response.sendRedirect("formulario.jsp");
             } else {
                 writer = response.getWriter();
-                writer.println("<center><br>"
-                        + "<p style='font-size:22px'>Hubo un error al registrar su solicitud</p>"
-                        + "<p style='font-size:22px'>Para regresar haga clic <a href='formulario.jsp'>aquí</a></p></center>");
+                writer.println(""
+                        + "<center><div class=\"panel panel-default\" style=\"width: 480px;height: 280px\">               "
+                        + "<table role=\"table\" border='1' align=\"center\" style=\"height: 100%;width: 100%\">"
+                        + "                    <!-- cabecera de login-->\n"
+                        + "                    <thead>\n"
+                        + "                    <th colspan=\"3\" style='background-color: #00A94E;heig:150px'>"
+                        + "                        <img src=\"img/Logo IBK verde.jpg\" alt=\"\" style='width: 192px;\n" +
+                                                    "    height: 60px;\n" +
+                                                    "    line-height: 1;'/>"
+                        + "                    </th>"
+                        + "                    </thead>"
+                        + "                    <tbody>"
+                        + "                        <tr>"
+                        + "                            <td style='text-align:center;font-size:22px'>"
+                        + "                                 <b>Ya se ha ingresado una solicitud con los mismo datos"
+                        + "                                 <br>Para regresar haga click <a href='formulario.jsp'>aquí</a><b>"
+                        + "                            </td>"
+                        + "                        </tr>\n"
+                        + "                    </tbody>\n"
+                        + "                </table>"
+                        + "</div></center>");
             }
         }
 

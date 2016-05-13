@@ -26,7 +26,6 @@
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
         <script>
             <%
-                Cookie cookie = null;
                 Cookie[] cookies = null;
                 // Get an array of Cookies associated with this domain
                 cookies = request.getCookies();
@@ -45,8 +44,6 @@
     <body>
         <!--recibe el registro del usuario logeado-->
         <% String user = nombre;%>
-
-
         <!--conexión a la BD-->
         <sql:setDataSource var="snapshot" driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
                            url="jdbc:sqlserver://b27279ch3w7"
@@ -484,7 +481,6 @@
                                                     <option>Crédito con ampliación</option>
                                                     <option>Crédito para construcción</option>
                                                     <option>Techo Propio</option>
-
                                                 </select>
                                             </td>
                                         </tr>
@@ -638,7 +634,7 @@
                         <div class="modal-body">
 
                             <form action="ServletRepechajeFFVV" method="post" enctype="multipart/form-data">
-                                <br>Nueva Tasa<input type="text" class="form-control" name="tasaR" id="tasaR"  />
+                                <br>Nueva Tasa (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5"/>
                                 <br><input type="text" name="idR" id="idR" hidden="">
                                 <br><input type="file" name="imagen"  id="imagen"/>
                                 <br>Comentario<textarea type="textarea" id="comentarioR" name="comentarioR" class="form-control" maxlength="255" placeholder="Motivo de la nueva tasa"></textarea>

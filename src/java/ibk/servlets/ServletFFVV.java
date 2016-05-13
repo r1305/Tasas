@@ -83,6 +83,7 @@ public class ServletFFVV extends HttpServlet {
         String p ="";
         String f = cruce.concat(cts + planilla + otros + ",");
         String cruceF = "";
+        System.out.println(prod);
         if (prod.equals("Mi Vivienda") || prod.equals("Techo Propio")) {
             p="Mi Vivienda";
         }else{
@@ -99,7 +100,7 @@ public class ServletFFVV extends HttpServlet {
         } else {
             Conexion c = new Conexion();
             boolean ok = false;
-            String repe = c.validarRepeticiones(dni, prestamo, tasa);
+            String repe = c.validarRepeticiones(dni, prestamo, tasa,prod);
             if (repe.equals("ok")|| repe.equals("")) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
                     ok = c.registroSolicitudFFVV(nombre.toUpperCase(), sh, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
@@ -119,20 +120,33 @@ public class ServletFFVV extends HttpServlet {
                     ok = c.registroSolicitud2FilesFFVV(nombre.toUpperCase(), sh, f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 }
-            } else {
-                System.out.println("else del repe " + repe);
-                writer = response.getWriter();
-                writer.println("<center><p style='font-size:22px'>Datos ingresados duplicados</p></center>");
-
-            }
+            } 
 
             if (ok) {
-                response.sendRedirect("formulario_ffvv.jsp");
+                response.sendRedirect("formulario.jsp");
             } else {
                 writer = response.getWriter();
-                writer.println("<center><br>"
-                        + "<p style='font-size:22px'>Hubo un error al registrar su solicitud</p>"
-                        + "<p style='font-size:22px'>Para regresar haga clic <a href='formulario_ffvv.jsp'>aquí</a></p></center>");
+                writer.println(""
+                        + "<center><div class=\"panel panel-default\" style=\"width: 480px;height: 280px\">               "
+                        + "<table role=\"table\" border='1' align=\"center\" style=\"height: 100%;width: 100%\">"
+                        + "                    <!-- cabecera de login-->\n"
+                        + "                    <thead>\n"
+                        + "                    <th colspan=\"3\" style='background-color: #00A94E;heig:150px'>"
+                        + "                        <img src=\"img/Logo IBK verde.jpg\" alt=\"\" style='width: 192px;\n" +
+                                                    "    height: 60px;\n" +
+                                                    "    line-height: 1;'/>"
+                        + "                    </th>"
+                        + "                    </thead>"
+                        + "                    <tbody>"
+                        + "                        <tr>"
+                        + "                            <td style='text-align:center;font-size:22px'>"
+                        + "                                 <b>Ya se ha ingresado una solicitud con los mismo datos"
+                        + "                                 <br>Para regresar haga click <a href='formulario.jsp'>aquí</a><b>"
+                        + "                            </td>"
+                        + "                        </tr>\n"
+                        + "                    </tbody>\n"
+                        + "                </table>"
+                        + "</div></center>");
             }
         }
 

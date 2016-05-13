@@ -1370,7 +1370,7 @@ public class Conexion {
         return ok;
     }
 
-    public String validarRepeticiones(String dni, String monto, String tasa) {
+    public String validarRepeticiones(String dni, String monto, String tasa,String producto) {
         String ok = "";
         Connection conn = getConnection();
         String query;
@@ -1384,7 +1384,8 @@ public class Conexion {
                     if (rs.getString("Estado").equals("Rechazada")) {
                         ok = "ok";
                         break;
-                    } else if (dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == rs.getFloat("Prestamo") && Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada")) {                        
+                    } else if (dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == rs.getFloat("Prestamo") &&
+                            Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada") && producto.equals(rs.getString("Producto_origen"))) {                        
                         ok = "fail";
                         break;
                     }else{

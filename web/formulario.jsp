@@ -541,11 +541,10 @@
                         </div>
                         <div class="modal-body">
                             <form action="ServletRepechaje" method="post" enctype="multipart/form-data">
-                                <br>Nueva Tasa<input type="text" class="form-control" name="tasaR" id="tasaR"  />
+                                <br>Nueva Tasa (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5" />
                                 <br><input type="text" name="idR" id="idR" hidden="">
                                 <br><input type="file" name="imagen"  id="imagen"/>
                                 <br>Comentario<textarea type="textarea" id="comentarioR" name="comentarioR" class="form-control" maxlength="255" placeholder="Motivo de la nueva tasa"></textarea>
-
                                 <br><input type="submit" value="Registrar">
                             </form>
                         </div>

@@ -58,6 +58,9 @@ public class ServletLogin extends HttpServlet {
         } else if (ok.equals("ffvv")) {
             c.guardarLogin(user);
             response.sendRedirect("formulario_ffvv.jsp");
+        }else if(ok.equals("abp")){
+            c.guardarLogin(user);
+            response.sendRedirect("principal_abp.jsp");
         } else if (ok.equals("fail")) {
             response.sendRedirect("index.jsp?cod=1");
         } else if (ok.equals("no existe")) {

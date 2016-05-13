@@ -43,6 +43,50 @@ function aceptar() {
                 }
             });
 }
+
+function aceptar_abp() {
+
+    var id = document.getElementById("id").value;
+    var h = document.getElementById("hipo").value;
+    var b = document.getElementById("buro").value;
+    var tasa = document.getElementById("tasa").value;
+    var tasaS = document.getElementById("tasaS").value;
+    var u = document.getElementById("u").value;
+    var c = document.getElementById("comentario").value;
+    var tmin = document.getElementById("tmin").value;
+    var topt = document.getElementById("topt").value;
+    var spread = document.getElementById("sp").value;
+    var pmonto = document.getElementById("prim").value;
+    var cope = document.getElementById("cope").value;
+    var cof = document.getElementById("cof").value;
+    var priesgo = document.getElementById("pr").value;
+
+
+    $.get
+            ('ServletAceptadasABP', {
+                id: id,
+                user: u,
+                sh: h,
+                tasa: tasa,
+                comentario: c,
+                tasaS: tasaS,
+                tmin: tmin,
+                topt: topt,
+                spread: spread,
+                priesgo: priesgo,
+                cof: cof,
+                cope: cope,
+                pmonto: pmonto,
+                buro: b
+            }, function (responseText) {
+                if (responseText === "success") {
+                    alert("Solicitud Respondida");
+                    (window).location.href = 'principal_abp.jsp';
+                } else {
+                    alert("Ha ocurrido un error");
+                }
+            });
+}
 function rechazar() {
     var id = document.getElementById("id").value;
     var c = document.getElementById("comentario").value;
@@ -57,6 +101,30 @@ function rechazar() {
                 if (responseText === "success") {
                     alert("Solicitud Rechazada");
                     (window).location.href = 'principal.jsp';
+                } else {
+                    alert("Ha ocurrido un error");
+                }
+            });
+    }else{
+        alert("Ingrese un comentario porfavor");
+    }
+    
+}
+
+function rechazar_abp() {
+    var id = document.getElementById("id").value;
+    var c = document.getElementById("comentario").value;
+    var u = document.getElementById("u").value;
+    if(c!==""){
+        $.get
+            ('RechazadasABP', {
+                id: id,
+                comentario: c,
+                user: u
+            }, function (responseText) {
+                if (responseText === "success") {
+                    alert("Solicitud Rechazada");
+                    (window).location.href = 'principal_abp.jsp';
                 } else {
                     alert("Ha ocurrido un error");
                 }
