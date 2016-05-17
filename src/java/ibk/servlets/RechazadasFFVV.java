@@ -42,6 +42,7 @@ public class RechazadasFFVV extends HttpServlet {
         boolean ok = con.rechazadasFFVV(user, id, comentario);
         if (ok) {
             response.getWriter().write("success");
+            con.enviarMail(id);
         } else {
             response.getWriter().write("fail");
         }

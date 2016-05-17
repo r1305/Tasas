@@ -53,7 +53,7 @@
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal='ABP' and f.Cont=1
+            where f.Estado='Pendiente' and u.Canal2='ABP' and f.Cont=1
             order by tiempo desc
         </sql:query>
         <!-- Query para las solicitudes pendiente de repechaje del canal de RED -->
@@ -71,37 +71,37 @@
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal='ABP' and f.Cont=2
+            where f.Estado='Pendiente' and u.Canal2='ABP' and f.Cont=2
             order by tiempo desc
         </sql:query>
-            
+
         <!-- Query para contar las solicitudes pendiente del canal de RED -->
         <sql:query dataSource="${snapshot}" var="n">
             SELECT COUNT(*) as numero
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal='ABP' and f.Cont=1
+            where f.Estado='Pendiente' and u.Canal2='ABP' and f.Cont=1
         </sql:query>
-            
+
         <!-- Query para contar las solicitudes pendiente de repechaje del canal de RED -->
         <sql:query dataSource="${snapshot}" var="repe_red_n">
             SELECT COUNT(*) as numero
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal='ABP' and f.Cont=2
+            where f.Estado='Pendiente' and u.Canal2='ABP' and f.Cont=2
         </sql:query>
         <!-- Query para contar las solicitudes aceptadas según encargado -->
         <sql:query dataSource="${snapshot}" var="a">
             select COUNT(*) as numero from Phoenix.Formulario where Estado='Aceptada' and Encargado_revision='<%=user%>'
         </sql:query>
-            
+
         <!-- Query para contar las solicitudes contraOfertas según encargado -->
         <sql:query dataSource="${snapshot}" var="r">
             select COUNT(*) as numero from Phoenix.Formulario where Estado='ContraOferta' and Encargado_revision='<%=user%>'
         </sql:query>
-            
+
         <!-- Query para mostrar todas las solicitudes aceptadas por el usuario logeado -->
         <sql:query dataSource="${snapshot}" var="aceptada">
             SELECT *,case Moneda
@@ -161,8 +161,7 @@
                 <li><a data-toggle="tab" href="#repe_abp" style="color: #0060B3;font-size: 13px"><b>Repechaje (<c:forEach var="b" items="${repe_red_n.rows}">${b.numero}</c:forEach>)</b></a></li>                
                 <li><a data-toggle="tab" href="#aceptadas" style="color: #0060B3;font-size: 13px"><b>Aceptadas (<c:forEach var="b" items="${a.rows}">${b.numero}</c:forEach>) </b></a></li>
                 <li><a data-toggle="tab" href="#rechazadas" style="color: #0060B3;font-size: 13px"><b>Contra Ofertas (<c:forEach var="b" items="${r.rows}">${b.numero}</c:forEach>)</b></a></li>
-                <li><a data-toggle="tab" href="#simulador" onclick="p();"style="color: #0060B3;font-size: 13px"><b>Simulador</b></a></li>
-                <li><a data-toggle="tab" href="#estad" style="color: #0060B3;font-size: 13px"><b>Estadisticas</b></a></li>
+                    <li><a data-toggle="tab" href="#simulador" onclick="p();"style="color: #0060B3;font-size: 13px"><b>Simulador</b></a></li>
                 </ul>
                 <!-- Contenido de los tabs -->
                 <div class="tab-content" style="margin-top: 15px">
@@ -227,353 +226,337 @@
                         </table>
                     </div>
                 </div>
-                    <!-- Solicitudes repechajes de ABP -->
-                    <div id="repe_abp" class="tab-pane fade">
+                <!-- Solicitudes repechajes de ABP -->
+                <div id="repe_abp" class="tab-pane fade">
 
-                        <div class="container" style="overflow-y: scroll;width:100%">
-                            <div class="input-group"> 
-
-                                <span class="input-group-addon" onclick="location.reload();">
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    Actualizar
-                                </span>
-
-                                <input id="f2" type="text" class="form-control" placeholder="Ingrese consulta...">
-                            </div>
-                            <table class="table" border="1">
-                                <thead class="filters">
-                                    <tr>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">Fecha de Solicitud</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Usuario</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Canal</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa ADQ</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa Solicitada</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Plazo</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="12%">Motivo</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Producto</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Monto Solicitado</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;">Moneda</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
-                            <table class="table" border="1">
-                                <tbody class="searchable2" data-filter="#f2">
-                                    <c:forEach var="a" items="${repe_red.rows}">
-                                        <tr style="text-align: center">
-                                            <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_abp.jsp?id=${a.Id}">${a.solicitud}</a>
-                                                <c:choose>
-                                                    <c:when test="${a.tiempo<=480}">
-                                                        <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
-                                                    </c:when>
-                                                    <c:when test="${a.tiempo<=1260}">
-                                                        <span align="center" style="color:#FACC2E; font-family: Webdings; font-weight:bold">n</span>
-                                                    </c:when>
-                                                    <c:when test="${a.tiempo>1260}">
-                                                        <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
-                                                    </c:when>
-                                                </c:choose>
-                                            </td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Usuario}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Canal}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_ADQ}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
-                                            <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- Solicitudes aceptadas-->
-                    <div id="aceptadas" class="tab-pane fade">
-                        <div class="container" style="overflow-y: scroll;width:100%">
-                            <div class="input-group">
-                                <span class="input-group-addon" onclick="location.reload();">
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    Actualizar
-                                </span>
-                                <input id="f5" type="text" class="form-control" placeholder="Ingrese consulta...">
-                            </div>
-                            <table class="table" border="1">
-                                <thead>
-                                    <tr>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">Fecha de Respuesta</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Usuario</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Canal</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa ADQ</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa Aprobada</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Plazo</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="12%">Motivo</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Producto</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Monto Solicitado</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" >Moneda</th>
-
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="container" style="overflow-y: scroll;margin-top: -20px;;max-height: 600px;width:100%">
-                            <table class="table" border="1" id="datos">
-                                <tbody class="searchable5" data-filter="#f5">
-                                    <c:forEach var="a" items="${aceptada.rows}">
-                                        <tr style="text-align: center">
-                                            <td style="font-size: 12px;vertical-align:middle;" width="10%">
-                                                <a href="respondidas_abp.jsp?cod=${a.Id}">${a.aprobacion}</a>
-                                            </td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Usuario}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Canal}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_ADQ}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_aceptada}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
-                                            <td style=";font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- Solicitudes rechazadas-->
-                    <div id="rechazadas" class="tab-pane fade">
-                        <div class="container" style="overflow-y: scroll;width:100%" >
-                            <div class="input-group">
-                                <span class="input-group-addon" onclick="location.reload();">
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    Actualizar
-                                </span>
-                                <input id="f6" type="text" class="form-control" placeholder="Ingrese consulta...">
-                            </div>
-                            <table class="table" border="1">
-                                <thead>
-                                    <tr>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">Fecha de Respuesta</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Usuario</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Canal</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa ADQ</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa Solicitada</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Plazo</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="12%">Motivo</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Producto</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Monto Solicitado</th>
-                                        <th style=";font-size: 12px;text-align: center;vertical-align:middle;" >Moneda</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
-                            <table class="table" border="1" id="datos">
-                                <tbody class="searchable6" data-filter="#f6">
-                                    <c:forEach var="a" items="${contra.rows}">
-
-                                        <tr style="text-align: center">
-                                            <td style="font-size: 12px" width="10%">
-                                                <a href="respondidas_abp.jsp?cod=${a.Id}">${a.aprobacion}</a>
-                                            </td>
-                                            <td style=";font-size: 12px" width="8%">${a.Usuario}</td>
-                                            <td style=";font-size: 12px" width="10%">${a.Canal}</td>
-                                            <td style=";font-size: 12px" width="10%">${a.Tasa_ADQ}</td>
-                                            <td style=";font-size: 12px" width="10%">${a.Tasa_Solicitada}</td>
-                                            <td style=";font-size: 12px" width="8%">${a.Plazo}</td>
-                                            <td style=";font-size: 12px" width="12%">${a.Motivo}</td>
-                                            <td style=";font-size: 12px" width="10%">${a.Producto_origen}</td>
-                                            <td style=";font-size: 12px" width="10%">${a.prestamo}</td>
-                                            <td style=";font-size: 12px">${a.Moneda}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- Simulador -->
-                    <div id="simulador" class="tab-pane fade">
-                        <center>
-                            <div class="panel panel-default" style="width: 35%;margin-top: 15px">
-                                <table style="width: 95%"align='center'>
-                                    <tbody>
-                                        <tr>
-                                            <td align='center' style="background-color: #00A94E;color: #ffffff;" colspan="2"><b>Calculadora de TASA</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px"><br>Producto</td>
-                                            <td>
-                                                <br><select id="prod" class="form-control" onchange="costo();cfondo();">
-                                                    <option>Hipotecario</option>
-                                                    <option>Mi Vivienda</option>
-                                                </select>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Monto 
-                                            </td>
-                                            <td>
-                                                <input type="text" id="c" onchange="costo();" class="form-control">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Plazo (meses)
-                                            </td>
-                                            <td>
-                                                <input type="text" id="plazo" name="plazo" onchange="cfondo();" class="form-control" placeholder="Ingrese la cantidad de meses">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">Moneda</td>
-                                            <td>    
-                                                <select id="moneda" class="form-control">
-                                                    <option>Soles</option>
-                                                    <option>Dolares</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Score Bureau
-                                            </td>
-                                            <td>
-                                                <select id="buro" class="form-control" onchange="p();">
-                                                    <option>Alto</option>
-                                                    <option>Medio</option>
-                                                    <option>Bajo</option>
-                                                    <option>Muy Bajo</option>
-                                                    <option>Rechazo</option>
-                                                    <option>No recomendable</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Score Hipotecario
-                                            </td>
-                                            <td>
-                                                <select id="hipo" class="form-control" onchange="p();">
-                                                    <option>Alto</option>
-                                                    <option>Medio</option>
-                                                    <option>Bajo</option>
-                                                    <option>Rechazo</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Prima de Riesgo (%)
-                                            </td>
-                                            <td>
-                                                <div id="prima">
-                                                    <input type="text" class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                <br>Costo Operativo (%)
-                                            </td>
-                                            <td>
-                                                <div  id="cos">
-                                                    <input type="text" class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Prima por Monto (%)
-                                            </td>
-                                            <td>
-                                                <div id="mxp">
-                                                    <input type="text" class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Spread (%)
-                                            </td>
-                                            <td>
-                                                <div id="spread">
-                                                    <input type="text" class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>   
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Costo de Fondos (%)
-                                            </td>
-                                            <td>
-                                                <div id="cdf">
-                                                    <input type="text"class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                <br>Tasa Mínima (%)
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <br><input id="tmin" type="text" class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                Tasa Óptima (%)
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <input id="topt" type="text" class="form-control" readonly="">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="vertical-align:middle;font-size: 14px">
-                                                <br>Tasa aprobada (%)
-                                            </td>
-                                            <td>
-                                                <br><input type="text" id="tasa" onchange="roa();" name="tasa" class="form-control" placeholder="Ingrese tasa mayor a 0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control-label" style="vertical-align:middle;font-size: 12px">ROA (%)</td>
-                                            <td>
-                                                <div>
-                                                    <input id="roa" type="text"  class="form-control" readonly="true">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <br>
-                            </div>
-                        </center>
-                    </div>
-                    <!-- Estadisticas -->
-                    <div id="estad" class="tab-pane fade">
-
-                    <div class="container" style="width:100%">
+                    <div class="container" style="overflow-y: scroll;width:100%">
                         <div class="input-group"> 
 
                             <span class="input-group-addon" onclick="location.reload();">
                                 <span class="glyphicon glyphicon-refresh"></span>
                                 Actualizar
                             </span>
+
+                            <input id="f2" type="text" class="form-control" placeholder="Ingrese consulta...">
                         </div>
+                        <table class="table" border="1">
+                            <thead class="filters">
+                                <tr>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">Fecha de Solicitud</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Usuario</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Canal</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa ADQ</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa Solicitada</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Plazo</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="12%">Motivo</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Producto</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Monto Solicitado</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;">Moneda</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
-                    <div class="container" style="width:100%;max-height: 600px">
-                        <jsp:include page="estadisticas.jsp"></jsp:include>
+                    <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
+                        <table class="table" border="1">
+                            <tbody class="searchable2" data-filter="#f2">
+                                <c:forEach var="a" items="${repe_red.rows}">
+                                    <tr style="text-align: center">
+                                        <td style="font-size: 12px;vertical-align:middle" width="10%"><a href="repe_abp.jsp?id=${a.Id}">${a.solicitud}</a>
+                                            <c:choose>
+                                                <c:when test="${a.tiempo<=480}">
+                                                    <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${a.tiempo<=1260}">
+                                                    <span align="center" style="color:#FACC2E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${a.tiempo>1260}">
+                                                    <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                            </c:choose>
+                                        </td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Usuario}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Canal}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_ADQ}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_Solicitada}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
+                                        <td style="font-size: 12px;vertical-align:middle;">${a.Moneda}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+                <!-- Solicitudes aceptadas-->
+                <div id="aceptadas" class="tab-pane fade">
+                    <div class="container" style="overflow-y: scroll;width:100%">
+                        <div class="input-group">
+                            <span class="input-group-addon" onclick="location.reload();">
+                                <span class="glyphicon glyphicon-refresh"></span>
+                                Actualizar
+                            </span>
+                            <input id="f5" type="text" class="form-control" placeholder="Ingrese consulta...">
+                        </div>
+                        <table class="table" border="1">
+                            <thead>
+                                <tr>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">Fecha de Respuesta</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Usuario</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Canal</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa ADQ</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa Aprobada</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Plazo</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="12%">Motivo</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Producto</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Monto Solicitado</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" >Moneda</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="container" style="overflow-y: scroll;margin-top: -20px;;max-height: 600px;width:100%">
+                        <table class="table" border="1" id="datos">
+                            <tbody class="searchable5" data-filter="#f5">
+                                <c:forEach var="a" items="${aceptada.rows}">
+                                    <tr style="text-align: center">
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">
+                                            <a href="respondidas_abp.jsp?cod=${a.Id}">${a.aprobacion}</a>
+                                        </td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Usuario}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Canal}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_ADQ}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Tasa_aceptada}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="8%">${a.Plazo}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="12%">${a.Motivo}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.Producto_origen}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" width="10%">${a.prestamo}</td>
+                                        <td style=";font-size: 12px;vertical-align:middle;" >${a.Moneda}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Solicitudes rechazadas-->
+                <div id="rechazadas" class="tab-pane fade">
+                    <div class="container" style="overflow-y: scroll;width:100%" >
+                        <div class="input-group">
+                            <span class="input-group-addon" onclick="location.reload();">
+                                <span class="glyphicon glyphicon-refresh"></span>
+                                Actualizar
+                            </span>
+                            <input id="f6" type="text" class="form-control" placeholder="Ingrese consulta...">
+                        </div>
+                        <table class="table" border="1">
+                            <thead>
+                                <tr>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">Fecha de Respuesta</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Usuario</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Canal</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa ADQ</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Tasa Solicitada</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="8%">Plazo</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="12%">Motivo</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Producto</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" width="10%">Monto Solicitado</th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" >Moneda</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">
+                        <table class="table" border="1" id="datos">
+                            <tbody class="searchable6" data-filter="#f6">
+                                <c:forEach var="a" items="${contra.rows}">
+
+                                    <tr style="text-align: center">
+                                        <td style="font-size: 12px" width="10%">
+                                            <a href="respondidas_abp.jsp?cod=${a.Id}">${a.aprobacion}</a>
+                                        </td>
+                                        <td style=";font-size: 12px" width="8%">${a.Usuario}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Canal}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Tasa_ADQ}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Tasa_Solicitada}</td>
+                                        <td style=";font-size: 12px" width="8%">${a.Plazo}</td>
+                                        <td style=";font-size: 12px" width="12%">${a.Motivo}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.Producto_origen}</td>
+                                        <td style=";font-size: 12px" width="10%">${a.prestamo}</td>
+                                        <td style=";font-size: 12px">${a.Moneda}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Simulador -->
+                <div id="simulador" class="tab-pane fade">
+                    <center>
+                        <div class="panel panel-default" style="width: 35%;margin-top: 15px">
+                            <table style="width: 95%"align='center'>
+                                <tbody>
+                                    <tr>
+                                        <td align='center' style="background-color: #00A94E;color: #ffffff;" colspan="2"><b>Calculadora de TASA</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px"><br>Producto</td>
+                                        <td>
+                                            <br><select id="prod" class="form-control" onchange="costo();cfondo();">
+                                                <option>Hipotecario</option>
+                                                <option>Mi Vivienda</option>
+                                            </select>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Monto 
+                                        </td>
+                                        <td>
+                                            <input type="text" id="c" onchange="costo();" class="form-control">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Plazo (meses)
+                                        </td>
+                                        <td>
+                                            <input type="text" id="plazo" name="plazo" onchange="cfondo();" class="form-control" placeholder="Ingrese la cantidad de meses">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">Moneda</td>
+                                        <td>    
+                                            <select id="moneda" class="form-control">
+                                                <option>Soles</option>
+                                                <option>Dolares</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Score Bureau
+                                        </td>
+                                        <td>
+                                            <select id="buro" class="form-control" onchange="p();">
+                                                <option>Alto</option>
+                                                <option>Medio</option>
+                                                <option>Bajo</option>
+                                                <option>Muy Bajo</option>
+                                                <option>Rechazo</option>
+                                                <option>No recomendable</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Score Hipotecario
+                                        </td>
+                                        <td>
+                                            <select id="hipo" class="form-control" onchange="p();">
+                                                <option>Alto</option>
+                                                <option>Medio</option>
+                                                <option>Bajo</option>
+                                                <option>Rechazo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Prima de Riesgo (%)
+                                        </td>
+                                        <td>
+                                            <div id="prima">
+                                                <input type="text" class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            <br>Costo Operativo (%)
+                                        </td>
+                                        <td>
+                                            <div  id="cos">
+                                                <input type="text" class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Prima por Monto (%)
+                                        </td>
+                                        <td>
+                                            <div id="mxp">
+                                                <input type="text" class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Spread (%)
+                                        </td>
+                                        <td>
+                                            <div id="spread">
+                                                <input type="text" class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>   
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Costo de Fondos (%)
+                                        </td>
+                                        <td>
+                                            <div id="cdf">
+                                                <input type="text"class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            <br>Tasa Mínima (%)
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <br><input id="tmin" type="text" class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            Tasa Óptima (%)
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <input id="topt" type="text" class="form-control" readonly="">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:middle;font-size: 14px">
+                                            <br>Tasa aprobada (%)
+                                        </td>
+                                        <td>
+                                            <br><input type="text" id="tasa" onchange="roa();" name="tasa" class="form-control" placeholder="Ingrese tasa mayor a 0">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="control-label" style="vertical-align:middle;font-size: 12px">ROA (%)</td>
+                                        <td>
+                                            <div>
+                                                <input id="roa" type="text"  class="form-control" readonly="true">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </center>
                 </div>
             </div>
         </div> 

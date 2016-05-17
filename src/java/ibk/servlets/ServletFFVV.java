@@ -123,7 +123,7 @@ public class ServletFFVV extends HttpServlet {
             } 
 
             if (ok) {
-                response.sendRedirect("formulario.jsp");
+                response.sendRedirect("formulario_ffvv.jsp");
             } else {
                 writer = response.getWriter();
                 writer.println(""
@@ -141,7 +141,7 @@ public class ServletFFVV extends HttpServlet {
                         + "                        <tr>"
                         + "                            <td style='text-align:center;font-size:22px'>"
                         + "                                 <b>Ya se ha ingresado una solicitud con los mismo datos"
-                        + "                                 <br>Para regresar haga click <a href='formulario.jsp'>aquí</a><b>"
+                        + "                                 <br>Para regresar haga click <a href='formulario_ffvv.jsp'>aquí</a><b>"
                         + "                            </td>"
                         + "                        </tr>\n"
                         + "                    </tbody>\n"

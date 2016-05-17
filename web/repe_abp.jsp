@@ -89,7 +89,7 @@
                     <table style="width: 100%;" align='center'>
                         <tr>
                             <td style="background-color: #00A94E;color: #ffffff;text-align: center;vertical-align: central" colspan="2">
-                                <button id="back" type="button" onclick="location.href = 'principal.jsp'" class="btn btn-default btn-sm">
+                                <button id="back" type="button" onclick="location.href = 'principal_abp.jsp'" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-arrow-left"></span> Atrás
                                 </button>
                                 <b style="text-align: center;margin-right: -65px">Calculadora de TASA</b>

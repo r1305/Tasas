@@ -35,7 +35,6 @@ function ci(){
     }
 }
 
-
 //resta el valor inmueble y cuota inicial para mostrar el monto de financiamiento
 function r()
 {

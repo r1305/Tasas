@@ -8,20 +8,16 @@ package ibk.servlets;
 import ibk.dto.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author BP2158
  */
-public class ServletAceptadas extends HttpServlet {
+public class RechazadasABP extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,7 +30,22 @@ public class ServletAceptadas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        
+        String user = request.getParameter("user");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String comentario = request.getParameter("comentario");
+       
 
+        Conexion con = new Conexion();
+        boolean ok = con.rechazadasFFVV(user, id, comentario);
+        if (ok) {
+            response.getWriter().write("success");
+            con.enviarMailRechazadosABP(id);
+        } else {
+            response.getWriter().write("fail");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -50,34 +61,6 @@ public class ServletAceptadas extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-
-        String user = request.getParameter("user");
-        int id = Integer.parseInt(request.getParameter("id"));
-        String sb = request.getParameter("sb");
-        String sh = request.getParameter("sh");
-        String comentario = request.getParameter("comentario");
-        String tasa = request.getParameter("tasa"); 
-        String tasaS = request.getParameter("tasaS");
-        String spread=request.getParameter("spread");
-        String pmonto=request.getParameter("pmonto");
-        String priesgo=request.getParameter("priesgo");
-        String cof=request.getParameter("cof");
-        String cope=request.getParameter("cope");
-        String tmin=request.getParameter("tmin");
-        String topt=request.getParameter("topt");
-        
-        Conexion con = new Conexion();
-        boolean ok = con.responder(user, sb, sh, comentario, tasa, id, tasaS,tmin,topt,spread,pmonto,cope,cof,priesgo);
-        if (ok) {
-            response.getWriter().write("success");
-            con.enviarMail(id);
-        } else {
-            response.getWriter().write("fail");
-        }
-
     }
 
     /**

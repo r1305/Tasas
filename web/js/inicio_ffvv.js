@@ -125,6 +125,7 @@ function rechazar_abp() {
                 if (responseText === "success") {
                     alert("Solicitud Rechazada");
                     (window).location.href = 'principal_abp.jsp';
+                    
                 } else {
                     alert("Ha ocurrido un error");
                 }

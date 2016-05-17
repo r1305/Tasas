@@ -19,7 +19,9 @@ function ver() {
             }, function (responseText) {
                 if (responseText === "jefe") {
                     (window).location.href = 'principal.jsp';
-                } else if (responseText === "supervisor") {
+                } else if (responseText === "abp") {
+                    (window).location.href = 'principal_abp.jsp';
+                }  else if (responseText === "supervisor") {
                     (window).location.href = 'supervisor.jsp';
                 } else if (responseText === "gerente") {
                     (window).location.href = 'gerente.jsp';

@@ -92,6 +92,14 @@
         <servlet-name>RechazadasFFVV</servlet-name>
         <servlet-class>ibk.servlets.RechazadasFFVV</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RechazadasABP</servlet-name>
+        <servlet-class>ibk.servlets.RechazadasABP</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAceptadasABP</servlet-name>
+        <servlet-class>ibk.servlets.ServletAceptadasABP</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -183,6 +191,14 @@
     <servlet-mapping>
         <servlet-name>RechazadasFFVV</servlet-name>
         <url-pattern>/RechazadasFFVV</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RechazadasABP</servlet-name>
+        <url-pattern>/RechazadasABP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAceptadasABP</servlet-name>
+        <url-pattern>/ServletAceptadasABP</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

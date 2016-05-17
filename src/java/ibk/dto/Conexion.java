@@ -100,6 +100,30 @@ public class Conexion {
         return ok;
     }
     
+    public boolean enviarMailABP(int cod) {
+        Connection con = null;
+        CallableStatement proc = null;
+        ResultSet rs = null;
+        boolean ok = false;
+
+        try {
+            con = getConnection();
+
+            proc = con.prepareCall("{ call Phoenix.sp_mail_abp(?) }");
+
+            proc.setInt(1, cod);
+            rs = proc.executeQuery();
+
+            proc.close();
+            rs.close();
+            ok = false;
+        } catch (Exception e) {
+
+            ok = true;
+        }
+        return ok;
+    }
+    
     public boolean enviarMailRechazados(int cod) {
         Connection con = null;
         CallableStatement proc = null;
@@ -110,6 +134,30 @@ public class Conexion {
             con = getConnection();
 
             proc = con.prepareCall("{ call Phoenix.sp_mail_rechazo(?) }");
+
+            proc.setInt(1, cod);
+            rs = proc.executeQuery();
+
+            proc.close();
+            rs.close();
+            ok = false;
+        } catch (Exception e) {
+
+            ok = true;
+        }
+        return ok;
+    }
+    
+    public boolean enviarMailRechazadosABP(int cod) {
+        Connection con = null;
+        CallableStatement proc = null;
+        ResultSet rs = null;
+        boolean ok = false;
+
+        try {
+            con = getConnection();
+
+            proc = con.prepareCall("{ call Phoenix.sp_mail_rechazo_abp(?) }");
 
             proc.setInt(1, cod);
             rs = proc.executeQuery();
@@ -453,6 +501,8 @@ public class Conexion {
                                 ok = "gerente";
                             } else if (rs.getString("Perfil").equalsIgnoreCase("Solicitante FFVV")) {
                                 ok = "ffvv";
+                            } else if (rs.getString("Perfil").equalsIgnoreCase("Evaluador ABP")) {
+                                ok = "abp";
                             } else {
                                 ok = "red";
                             }
@@ -1282,7 +1332,6 @@ public class Conexion {
             }
 
             ps.executeUpdate();
-            enviarMail(id);
             updateVencimiento();
 
             ok = true;
@@ -1355,7 +1404,6 @@ public class Conexion {
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.executeUpdate();
-            enviarMailRechazados(id);
             updateVencimiento();
             ok = true;
 
@@ -1370,7 +1418,7 @@ public class Conexion {
         return ok;
     }
 
-    public String validarRepeticiones(String dni, String monto, String tasa,String producto) {
+    public String validarRepeticiones(String dni, String monto, String tasa, String producto) {
         String ok = "";
         Connection conn = getConnection();
         String query;
@@ -1379,22 +1427,21 @@ public class Conexion {
 
             Statement state = conn.createStatement();
             ResultSet rs = state.executeQuery(query);
-            
-                while (rs.next()) {
-                    if (rs.getString("Estado").equals("Rechazada")) {
-                        ok = "ok";
-                        break;
-                    } else if (dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == rs.getFloat("Prestamo") &&
-                            Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada") && producto.equals(rs.getString("Producto_origen"))) {                        
-                        ok = "fail";
-                        break;
-                    }else{
-                        ok="ok";
-                    }
+
+            while (rs.next()) {
+                //System.out.println("entrando al rs");
+                if (rs.getString("Estado").equals("Rechzada")) {
+                    ok="ok";
+                } else if ((dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == Float.parseFloat(rs.getString("Prestamo"))
+                        && Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada") && producto.equalsIgnoreCase(rs.getString("Producto_origen"))) == true) {
+                    ok = "fail";
+                    break;
                 }
+
+            }
         } catch (Exception e) {
             System.out.println(e);
-            ok="ok";
+            ok = "ok";
         }
         return ok;
     }
