@@ -77,7 +77,7 @@ function aceptar_abp() {
                 cof: cof,
                 cope: cope,
                 pmonto: pmonto,
-                buro: b
+                sb: b
             }, function (responseText) {
                 if (responseText === "success") {
                     alert("Solicitud Respondida");

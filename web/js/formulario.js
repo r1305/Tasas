@@ -29,6 +29,7 @@ function ci(){
     var c=document.getElementById("cuota1").checked;
     if(c){
         $("#cuotaI").val("0");
+        r();
         $('#prod').val('Compra deuda');
     }else{
         $("#prod").prop('disabled', false);

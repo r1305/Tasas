@@ -1430,7 +1430,7 @@ public class Conexion {
 
             while (rs.next()) {
                 //System.out.println("entrando al rs");
-                if (rs.getString("Estado").equals("Rechzada")) {
+                if (rs.getString("Estado").equals("Rechazada")) {
                     ok="ok";
                 } else if ((dni.equals(rs.getString("Cod_doc")) && Float.parseFloat(monto) == Float.parseFloat(rs.getString("Prestamo"))
                         && Float.parseFloat(tasa) == rs.getFloat("Tasa_solicitada") && producto.equalsIgnoreCase(rs.getString("Producto_origen"))) == true) {

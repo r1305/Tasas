@@ -30,8 +30,7 @@ public class RechazadasFFVV extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         
         String user = request.getParameter("user");
         int id = Integer.parseInt(request.getParameter("id"));
@@ -42,7 +41,7 @@ public class RechazadasFFVV extends HttpServlet {
         boolean ok = con.rechazadasFFVV(user, id, comentario);
         if (ok) {
             response.getWriter().write("success");
-            con.enviarMail(id);
+            con.enviarMailRechazados(id);
         } else {
             response.getWriter().write("fail");
         }
