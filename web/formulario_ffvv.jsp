@@ -18,10 +18,9 @@
         <script src="js/jquery.min.js" type="text/javascript"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="js/formulario.js" type="text/javascript"></script>
-        <script src="js/tables.js" type="text/javascript"></script>
+        <script src="js/tables_ffvv.js" type="text/javascript"></script>
         <!--<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
         <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>-->
-        <script src="js/additional-methods.min.js" type="text/javascript"></script>
         <script src="js/additional-methods.min.js" type="text/javascript"></script>
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
         <script>
@@ -54,11 +53,15 @@
         </sql:query>
         <!-- query para obtener la cantidad de solicitudes aceptadas del usuario logeado-->
         <sql:query dataSource="${snapshot}" var="a">
-            select COUNT(*) as numero from Phoenix.Formulario where Estado='Aceptada' and [Usuario]='<%=user%>'
+            select COUNT(*) as numero from Phoenix.Formulario where Estado='Aceptada' and [Usuario]='<%=user%>' and dias>=0
         </sql:query>
         <!-- query para obtener la cantidad de solicitudes contraOfertas del usuario logeado-->
         <sql:query dataSource="${snapshot}" var="r">
-            select COUNT(*) as numero from Phoenix.Formulario where Estado='ContraOferta' and  [Usuario]='<%=user%>'
+            select COUNT(*) as numero from Phoenix.Formulario where Estado='ContraOferta' and  [Usuario]='<%=user%>' and dias>=0
+        </sql:query>
+        <!-- query para obtener la cantidad de solicitudes vencidas del usuario logeado-->
+        <sql:query dataSource="${snapshot}" var="v">
+            select COUNT(*) as numero from Phoenix.Formulario where dias<0 and  [Usuario]='<%=user%>' and (Estado='Aceptada' or Estado='ContraOferta' or Estado='Pendiente')
         </sql:query>
         <!--Query para mostrar las solicitudes pendientes con formato de monedas y fechas-->
         <sql:query dataSource="${snapshot}" var="result">
@@ -102,8 +105,8 @@
             convert(nvarchar(255),DAY(fecha_respuesta))+'-'+convert(nvarchar(255),MONTH(fecha_respuesta))+'-'+convert(nvarchar(255),YEAR(fecha_respuesta)) as aprobacion
             FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and Estado='ContraOferta' and dias>=0 order by 1
         </sql:query>
-        <!--Query para mostrar las solicitudes rechazadas con formato de monedas y fechas-->
-        <sql:query dataSource="${snapshot}" var="recha">
+        <!--Query para mostrar las solicitudes vencidas con formato de monedas y fechas-->
+        <sql:query dataSource="${snapshot}" var="vencidas">
             SELECT *,case Moneda
             when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','')
             when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','') 
@@ -114,7 +117,7 @@
             end As cuotaI,
             DATEDIFF(HH,fecha_solicitud,fecha_respuesta) as rpta,
             convert(nvarchar(255),DAY(fecha_respuesta))+'-'+convert(nvarchar(255),MONTH(fecha_respuesta))+'-'+convert(nvarchar(255),YEAR(fecha_respuesta)) as aprobacion
-            FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and Estado='Rechazada' and dias>=0 order by 1
+            FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and dias<0 and (Estado='Aceptada' or Estado='ContraOferta' or Estado='Pendiente') order by dias desc
         </sql:query>
         <!--Logo y banner según IBK-->
         <%Conexion c = new Conexion();%>
@@ -146,6 +149,7 @@
                 <li class="active"><a data-toggle="tab" href="#enviadas" style="color:#0060B3"><b>Enviadas (<c:forEach var="b" items="${n.rows}">${b.numero}</c:forEach>)</b></a></li>
                 <li><a data-toggle="tab" href="#aceptadas" style="color: #0060B3"><b>Aceptadas (<c:forEach var="b" items="${a.rows}">${b.numero}</c:forEach>)</b></a></li>
                 <li><a data-toggle="tab" href="#contraOfertas" style="color: #0060B3"><b>Contra Ofertas (<c:forEach var="b" items="${r.rows}">${b.numero}</c:forEach>)</b></a></li>               
+                <li><a data-toggle="tab" href="#vencidas" style="color: #0060B3"><b>Vencidas (<c:forEach var="b" items="${v.rows}">${b.numero}</c:forEach>)</b></a></li>               
                     <li><a data-toggle="tab" href="#solicitud" style="color: #0060B3"><b>Solicitud</b></a></li>
                 </ul>
 
@@ -161,7 +165,7 @@
                                 <input id="f1" type="text" class="form-control" placeholder="Ingrese consulta...">
                             </div>
                             <table class="table" border="1">
-                                <thead>
+                                <thead class="filters">
                                     <tr>
                                         <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
                                             <b>Fecha de Solicitud</b>
@@ -181,7 +185,7 @@
                         </div>
                         <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width: 100%">    
                             <table class="table" border="1">
-                                <tbody class="searchable">
+                                <tbody class="searchable1" data-filter="#f1">
                                 <c:forEach var="row" items="${result.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
@@ -217,7 +221,7 @@
                             <input id="f2" type="text" class="form-control" placeholder="Ingrese consulta...">
                         </div>
                         <table class="table" border="1">
-                            <thead>
+                            <thead class="filters">
                                 <tr>
 
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
@@ -238,7 +242,7 @@
                     </div>
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
                         <table class="table" border="1">
-                            <tbody class="searchable1">
+                            <tbody class="searchable2" data-filter="#f2">
                                 <c:forEach var="row" items="${aceptada.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
@@ -252,18 +256,21 @@
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_aceptada}</td>
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.dias}
                                             <c:choose>
-                                                <c:when test="${row.dias>10}">
-                                                    <span align="center" style="color:#009150; font-family: Webdings;; font-weight:bold">n</span>
+                                                <c:when test="${row.dias>20}">
+                                                    <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
                                                 </c:when>
-                                                <c:otherwise>
-                                                    <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
-                                                </c:otherwise>
+                                                <c:when test="${row.dias>10}">
+                                                    <span align="center" style="color:#FACC2E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${row.dias<11}">
+                                                    <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
                                             </c:choose>
                                         </td> 
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Motivo}</td>
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" >
                                             <a data-toggle="modal" data-id="${row.Id}" class="open-reenvio btn btn-primary" href="#reenvio">
-                                                <span class="glyphicon glyphicon-repeat"></span>
+                                                <span class="glyphicon glyphicon-send"></span>
                                             </a>
                                         </td>
                                     </tr>
@@ -283,7 +290,7 @@
                             <input id="f3" type="text" class="form-control" placeholder="Ingrese consulta...">
                         </div>
                         <table class="table" border="1">
-                            <thead>
+                            <thead class="filters">
                                 <tr>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
                                         <b>Fecha de Aprobación</b>
@@ -291,7 +298,7 @@
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>DNI</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Monto Solicitado</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Moneda</b></th>
-                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Plazo</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Plazo</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Producto</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Mínima</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Solicitada</b></th>
@@ -314,24 +321,27 @@
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
-                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Plazo}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Plazo}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Aceptada}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td> 
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.dias}
                                             <c:choose>
-                                                <c:when test="${row.dias>10}">
-                                                    <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
+                                                <c:when test="${row.dias>20}">
+                                                    <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
                                                 </c:when>
-                                                <c:otherwise>
-                                                    <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
-                                                </c:otherwise>
+                                                <c:when test="${row.dias>10}">
+                                                    <span align="center" style="color:#FACC2E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${row.dias<11}">
+                                                    <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
                                             </c:choose>
                                         </td> 
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Motivo}</td>
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" >
                                             <a data-toggle="modal" data-id="${row.Id}" class="open-reenvio btn btn-primary" href="#reenvio">
-                                                <span class="glyphicon glyphicon-repeat"></span>
+                                                <span class="glyphicon glyphicon-send"></span>
                                             </a>
                                         </td>
                                     </tr>
@@ -340,8 +350,8 @@
                         </table>
                     </div>
                 </div>
-                <!--Tab de solicitudes rechazadas-->
-                <div id="contraOfertas" class="tab-pane fade" style="margin-left: -14px;margin-top: 15px">
+                <!--Tab de solicitudes vencidas-->
+                <div id="vencidas" class="tab-pane fade" style="margin-left: -14px;margin-top: 15px">
                     <div class="container" style="overflow-y: scroll;width:100%">
                         <div class="input-group">
                             <span class="input-group-addon" onclick="location.reload();">
@@ -351,7 +361,7 @@
                             <input id="f4" type="text" class="form-control" placeholder="Ingrese consulta...">
                         </div>
                         <table class="table" border="1">
-                            <thead>
+                            <thead class="filters">
                                 <tr>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
                                         <b>Fecha de Aprobación</b>
@@ -359,12 +369,13 @@
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>DNI</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Monto Solicitado</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Moneda</b></th>
-                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Plazo</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Plazo</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Producto</b></th>
-                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Mínima</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Tasa Mínima</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Solicitada</b></th>
-                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Vigencia(dias)</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Dias Vencimiento</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Motivo</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" ><b>Actualización de Tasa</b></th>
                                 </tr>
                             </thead>
                         </table>
@@ -372,7 +383,7 @@
                     <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
                         <table class="table" border="1">
                             <tbody class="searchable4" data-filter="#f4">
-                                <c:forEach var="row" items="${recha.rows}">
+                                <c:forEach var="row" items="${vencidas.rows}">
                                     <tr style="text-align: center">
                                         <td style="font-size: 12px;vertical-align:middle;" width="10%">
                                             <a href="respondidas_ffvv.jsp?cod=${row.Id}">${row.aprobacion}</a>
@@ -380,21 +391,29 @@
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
-                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Plazo}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Plazo}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
-                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Aceptada}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Tasa_Aceptada}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td> 
-                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.dias}
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${Math.abs(row.dias)}
                                             <c:choose>
-                                                <c:when test="${row.dias>10}">
-                                                    <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
+                                                <c:when test="${row.dias>20}">
+                                                    <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
                                                 </c:when>
-                                                <c:otherwise>
-                                                    <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
-                                                </c:otherwise>
+                                                <c:when test="${row.dias>10}">
+                                                    <span align="center" style="color:#FACC2E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${row.dias<11}">
+                                                    <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
                                             </c:choose>
                                         </td> 
                                         <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Motivo}</td>
+                                        <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" >
+                                            <a data-toggle="modal" data-id="${row.Id}" class="open-actualizar btn btn-primary" href="#actualizar">
+                                                <span class="glyphicon glyphicon-repeat"></span>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -636,6 +655,32 @@
                             <form action="ServletRepechajeFFVV" method="post" enctype="multipart/form-data">
                                 <br>Nueva Tasa (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5"/>
                                 <br><input type="text" name="idR" id="idR" hidden="">
+                                <br><input type="file" name="imagen"  id="imagen"/>
+                                <br>Comentario<textarea type="textarea" id="comentarioR" name="comentarioR" class="form-control" maxlength="255" placeholder="Motivo de la nueva tasa"></textarea>
+
+                                <br><input type="submit" value="Registrar">
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- Modal actualización -->
+            <div class="modal fade" id="actualizar" role="dialog">
+                <div class="modal-dialog modal-sm" style="width: 350px"> 
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <center><h4 class="modal-title">Actualización de TASA</h4></center>
+                        </div>
+                        <div class="modal-body">
+
+                            <form action="ServletActualizacionFFVV" method="post" enctype="multipart/form-data">
+                                <br>Nueva Tasa (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5"/>
+                                <br><input type="text" name="id" id="id2" hidden="">
                                 <br><input type="file" name="imagen"  id="imagen"/>
                                 <br>Comentario<textarea type="textarea" id="comentarioR" name="comentarioR" class="form-control" maxlength="255" placeholder="Motivo de la nueva tasa"></textarea>
 

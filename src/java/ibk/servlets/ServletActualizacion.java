@@ -12,11 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -30,10 +25,9 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
-public class ServletRepechaje extends HttpServlet {
+public class ServletActualizacion extends HttpServlet {
 
     PrintWriter writer = null;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -55,7 +49,7 @@ public class ServletRepechaje extends HttpServlet {
         System.out.println(cont);
 
         if (cont == 1) {
-            ok = con.repechaje(i, tasa, c);
+            ok = con.actualización(i, tasa, c);
             if (ruta.getSize() > 0) {
                 okI = con.insertFiles(writeFile(ruta), id);
             }

@@ -340,7 +340,10 @@
                     <p style="color: red"><b>¡Repechaje¡</b></p>
                     <p style="color: red"><b>Tasa aprobada: ${row.Tasa_aceptada}</b></p>
                 </c:when>
-
+                <c:when test="${row.Cont>2}">
+                    <p style="color: orange"><b>¡Actualización de Tasa¡</b></p>
+                    <p style="color: orange"><b>Tasa aprobada: ${row.Tasa_aceptada}</b></p>
+                </c:when>
             </c:choose>
             <br>
             <button type="button" onclick="descargar()">Descargar Archivos (<%=c.contarFiles(Integer.parseInt(request.getParameter("id")))%>)</button>

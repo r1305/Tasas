@@ -46,3 +46,17 @@ $(document).ready(function () {
         });
     }(jQuery));
 });
+
+$(document).ready(function () {
+    (function ($) {
+
+        $('#f4').keyup(function () {
+
+            var rex = new RegExp($(this).val(), 'i');
+            $('.searchable4 tr').hide();
+            $('.searchable4 tr').filter(function () {
+                return rex.test($(this).text());
+            }).show();
+        });
+    }(jQuery));
+});

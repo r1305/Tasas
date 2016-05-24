@@ -146,6 +146,12 @@ $(document).on("click", ".open-reenvio", function () {
      $("#idR").val( myBookId );
 });
 
+$(document).on("click", ".open-actualizar", function () {
+     var myBookId = $(this).data('id');
+     //$("#test3").val(myBookId);
+     $("#id2").val( myBookId );
+});
+
 //deshabilitar función de ver código fuente y F12
 document.onkeypress = function (event) {
  event = (event || window.event);
@@ -161,50 +167,3 @@ document.onkeypress = function (event) {
  return false;
  }
  }
-
-//filtro de tablas
-$(document).bind("contextmenu", function (e) {
-    e.preventDefault();
-});
-
-//buscar las coincidencias en las tablas
-$(document).ready(function () {
-
-    (function ($) {
-
-        $('#f1').keyup(function () {
-
-            var rex = new RegExp($(this).val(), 'i');
-            $('.searchable tr').hide();
-            $('.searchable tr').filter(function () {
-                return rex.test($(this).text());
-            }).show();
-        });
-    }(jQuery));
-});
-$(document).ready(function () {
-    (function ($) {
-
-        $('#f2').keyup(function () {
-
-            var rex = new RegExp($(this).val(), 'i');
-            $('.searchable1 tr').hide();
-            $('.searchable1 tr').filter(function () {
-                return rex.test($(this).text());
-            }).show();
-        });
-    }(jQuery));
-});
-$(document).ready(function () {
-    (function ($) {
-
-        $('#f3').keyup(function () {
-
-            var rex = new RegExp($(this).val(), 'i');
-            $('.searchable2 tr').hide();
-            $('.searchable2 tr').filter(function () {
-                return rex.test($(this).text());
-            }).show();
-        });
-    }(jQuery));
-});

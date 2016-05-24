@@ -37,6 +37,29 @@ public class Conexion {
         return conn;
     }
     
+    public String vencidas(int cod){
+        String ok = "";
+        Connection conn = getConnection();
+        String query;
+        try {
+            query = "select * from BD_CHIP.Phoenix.Formulario where Id='" + cod + "'";
+
+            Statement state = conn.createStatement();
+            ResultSet rs = state.executeQuery(query);
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("dias")<0);
+                if(rs.getInt("dias")<0){
+                    ok="ok";
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            ok = "fail";
+        }
+        return ok;
+    }
+    
     public String getNombre(String registro) {
         String nombre = "";
         String nombref="";
@@ -652,6 +675,43 @@ public class Conexion {
         }
         return ok;
     }
+    public boolean actualización(String id, String tasa, String coment) {
+
+        boolean ok;
+        int cont=getContador(id);
+        if(cont==1){
+            cont=cont+2;
+        }else{
+            cont=cont+1;
+        }
+        System.out.println("actualizacion cont: "+cont);
+        try {
+
+            Connection conn = getConnection();
+            
+            
+            String query = "update [BD_CHIP].[Phoenix].[Formulario] set Estado='Pendiente',"
+                    + "Tasa_solicitada=" + Float.parseFloat(tasa) + ","
+                    + "comentF='" + coment + "',Fecha_solicitud=getdate(),Fecha_Vencimiento=Null"
+                    + ",cont="+cont+" where Id=" + id;
+            Statement st = conn.createStatement();
+            PreparedStatement pst = conn.prepareStatement(query);
+
+            pst.executeUpdate();
+            updateVencimiento();
+            ok = true;
+            conn.close();            
+            pst.close();
+            st.close();
+
+
+        } catch (SQLException ex) {
+            ok = false;
+            System.out.println("error " + ex);
+        }
+        return ok;
+    }
+    
 
     /**
      * solicitudes de RED *

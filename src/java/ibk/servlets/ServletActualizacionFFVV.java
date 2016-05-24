@@ -12,11 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -30,17 +25,25 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
-public class ServletRepechaje extends HttpServlet {
+public class ServletActualizacionFFVV extends HttpServlet {
 
-    PrintWriter writer = null;
-
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+        PrintWriter writer = null;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
-        String id = request.getParameter("idR");
-        String i = request.getParameter("idR");
+        String id = request.getParameter("id");
+        String i = request.getParameter("id");
         String tasa = request.getParameter("tasaR");
         String c = request.getParameter("comentarioR");
         Part ruta = request.getPart("imagen");
@@ -52,27 +55,39 @@ public class ServletRepechaje extends HttpServlet {
          */
         Conexion con = new Conexion();
         int cont = con.getContador(i);
-        System.out.println(cont);
+        System.out.println("Servlet Cont: "+cont);
 
-        if (cont == 1) {
-            ok = con.repechaje(i, tasa, c);
+            ok = con.actualización(i, tasa, c);
             if (ruta.getSize() > 0) {
                 okI = con.insertFiles(writeFile(ruta), id);
             }
             if (ok) {
-                response.sendRedirect("formulario.jsp");
+                response.sendRedirect("formulario_ffvv.jsp");
             } else {
                 writer = response.getWriter();
-                writer.println("Error al registrar su solicitud");
+                writer.println(""
+                        + "<center><div class=\"panel panel-default\" style=\"width: 480px;height: 280px\">               "
+                        + "<table role=\"table\" border='1' align=\"center\" style=\"height: 100%;width: 100%\">"
+                        + "                    <!-- cabecera de login-->\n"
+                        + "                    <thead>\n"
+                        + "                    <th colspan=\"3\" style='background-color: #00A94E;heig:150px'>"
+                        + "                        <img src=\"img/Logo IBK verde.jpg\" alt=\"\" style='width: 192px;\n" +
+                                                    "    height: 60px;\n" +
+                                                    "    line-height: 1;'/>"
+                        + "                    </th>"
+                        + "                    </thead>"
+                        + "                    <tbody>"
+                        + "                        <tr>"
+                        + "                            <td style='text-align:center;font-size:22px'>"
+                        + "                                 <b>Ocurrió un error al registrar su solicitud"
+                        + "                                 <br>Para regresar haga click <a href='formulario_ffvv.jsp'>aquí</a><b>"
+                        + "                            </td>"
+                        + "                        </tr>\n"
+                        + "                    </tbody>\n"
+                        + "                </table>"
+                        + "</div></center>");
             }
-        } else {
-            writer = response.getWriter();
-            writer.println("<center><br>"
-                    + "<p style='font-size:22px'>El número máximo de pedidos sobre una misma solicitud es de 2 veces</p>");
-            writer.println("<center><br>"
-                    + "<p style='font-size:22px'>¡Ha excedido el límite!</p>"
-                    + "<p style='font-size:22px'>Para regresar haga clic <a href='formulario.jsp'>aquí</a></p></center>");
-        }
+
 
     }
 
@@ -129,6 +144,7 @@ public class ServletRepechaje extends HttpServlet {
         }
         return ruta;
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

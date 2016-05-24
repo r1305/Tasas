@@ -100,6 +100,14 @@
         <servlet-name>ServletAceptadasABP</servlet-name>
         <servlet-class>ibk.servlets.ServletAceptadasABP</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletActualizacion</servlet-name>
+        <servlet-class>ibk.servlets.ServletActualizacion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletActualizacionFFVV</servlet-name>
+        <servlet-class>ibk.servlets.ServletActualizacionFFVV</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -199,6 +207,14 @@
     <servlet-mapping>
         <servlet-name>ServletAceptadasABP</servlet-name>
         <url-pattern>/ServletAceptadasABP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletActualizacion</servlet-name>
+        <url-pattern>/ServletActualizacion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletActualizacionFFVV</servlet-name>
+        <url-pattern>/ServletActualizacionFFVV</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

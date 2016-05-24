@@ -55,7 +55,7 @@
             join
             Phoenix.Usuarios u
             on f.Usuario=u.Registro
-            where Estado='Aceptada' and u.Canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>')
+            where Estado='Aceptada' and u.Canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and dias>=0
         </sql:query>
         <!--Contador de solicitudes rechazadas del canal del supervisor-->
         <sql:query dataSource="${snapshot}" var="r">
@@ -63,7 +63,15 @@
             join
             Phoenix.Usuarios u
             on f.Usuario=u.Registro
-            where Estado='ContraOferta' and u.Canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>')
+            where Estado='ContraOferta' and u.Canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and dias>=0
+        </sql:query>
+        <!--Contador de solicitudes vencidas del canal del supervisor-->
+        <sql:query dataSource="${snapshot}" var="v">
+            select COUNT(*) as numero from Phoenix.Formulario f 
+            join
+            Phoenix.Usuarios u
+            on f.Usuario=u.Registro
+            where (Estado='ContraOferta'or Estado='Aceptada') and u.Canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and dias<0
         </sql:query>
         <!--Listado de solicitudes pendientes -->
         <sql:query dataSource="${snapshot}" var="result">
@@ -83,7 +91,7 @@
             join
             Phoenix.Usuarios u
             on f.Usuario=u.Registro
-            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and Estado='Pendiente'order by tiempo desc
+            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and Estado='Pendiente' order by tiempo desc
         </sql:query>
         <!--Listado de solicitudes aceptadas -->
         <sql:query dataSource="${snapshot}" var="aceptada">
@@ -102,7 +110,7 @@
             join
             Phoenix.Usuarios u
             on f.Usuario=u.Registro
-            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and Estado='Aceptada' order by 1
+            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and Estado='Aceptada'  and dias>=0 order by tiempo desc
         </sql:query>
         <!--Listado de solicitudes rechazadas -->
         <sql:query dataSource="${snapshot}" var="contra">
@@ -121,7 +129,27 @@
             join
             Phoenix.Usuarios u
             on f.Usuario=u.Registro
-            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and Estado='ContraOferta'order by 1
+            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and Estado='ContraOferta'  and dias>=0 order by tiempo desc
+        </sql:query>
+
+        <!--Listado de solicitudes vencidas -->
+        <sql:query dataSource="${snapshot}" var="vencidas">
+            select *,
+            case Moneda
+            when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','') 
+            end as prestamo,
+            case Moneda
+            when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','') 
+            end as cuotaI,
+            DATEDIFF(HH,fecha_solicitud,fecha_respuesta) as rpta,
+            convert(nvarchar(255),DAY(fecha_solicitud))+'-'+convert(nvarchar(255),MONTH(fecha_solicitud))+'-'+convert(nvarchar(255),YEAR(fecha_solicitud)) as aprobacion
+            from BD_CHIP.Phoenix.Formulario f
+            join
+            Phoenix.Usuarios u
+            on f.Usuario=u.Registro
+            where u.canal=(select Canal from BD_CHIP.Phoenix.Usuarios where Registro='<%=user%>') and (Estado='ContraOferta' or Estado='Aceptada') and dias<0 order by tiempo desc
         </sql:query>
         <!--Cabecera de página -->
         <%Conexion c = new Conexion();%>
@@ -152,6 +180,7 @@
             <li class="active"><a data-toggle="tab" href="#enviadas" style="color:#0060B3"><b>Enviadas (<c:forEach var="b" items="${n.rows}">${b.numero}</c:forEach>)</b></a></li>
             <li><a data-toggle="tab" href="#aceptadas" style="color: #0060B3"><b>Aceptadas (<c:forEach var="b" items="${a.rows}">${b.numero}</c:forEach>) </b></a></li>
             <li><a data-toggle="tab" href="#contraOfertas" style="color: #0060B3"><b>Contra Ofertas (<c:forEach var="b" items="${r.rows}">${b.numero}</c:forEach>)</b></a></li>
+            <li><a data-toggle="tab" href="#vencidas" style="color: #0060B3"><b>Vencidas (<c:forEach var="b" items="${v.rows}">${b.numero}</c:forEach>)</b></a></li>
                 <li><a data-toggle="tab" href="#simulador" onclick="p();" style="color: #0060B3"><b>Simulador</b></a></li>
             </ul>
 
@@ -184,7 +213,7 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width: 100%">    
+                    <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width: 100%">    
                         <table class="table" border="1">
                             <tbody  class="searchable1" data-filter="#f1">
                             <c:forEach var="row" items="${result.rows}">
@@ -246,7 +275,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
+                <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">    
                     <table class="table" border="1">
                         <tbody class="searchable2" data-filter="#f2">
                             <c:forEach var="row" items="${aceptada.rows}">
@@ -309,7 +338,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
+                <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">    
                     <table class="table" border="1">
                         <tbody class="searchable3" data-filter="#f3">
                             <c:forEach var="row" items="${contra.rows}">
@@ -326,11 +355,78 @@
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td> 
                                     <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.dias}
                                         <c:choose>
-                                            <c:when test="${row.dias>10}">
-                                                <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
+                                            <c:when test="${row.dias>20}">
+                                                <span align="center" style="color:#009150; font-family: Webdings;; font-weight:bold">n</span>
+                                            </c:when>
+                                            <c:when test="${row.dias>10 && row.dias <21}">
+                                                <span align="center" style="color:yellow; font-family: Webdings;; font-weight:bold">n</span>
                                             </c:when>
                                             <c:otherwise>
-                                                <span align="center" style="color:#009150; font-family: Webdings; font-weight:bold">n</span>
+                                                <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td> 
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" >${row.Motivo}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Tab de solicitudes vencidas-->
+            <div id="vencidas" class="tab-pane fade" style="margin-left: -14px;margin-top: 15px">
+                <div class="container" style="overflow-y: scroll;width:100%">
+                    <div class="input-group">
+                        <span class="input-group-addon" onclick="location.reload();">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            Actualizar
+                        </span>
+                        <input id="f4" type="text" class="form-control" placeholder="Ingrese consulta...">
+                    </div>
+                    <table class="table" border="1">
+                        <thead  class="filters">
+                            <tr>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
+                                    <b>Fecha de Aprobación</b>
+                                </th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>DNI</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Monto Solicitado</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Moneda</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Plazo</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Producto</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Mínima</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Solicitada</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Vigencia(dias)</b></th>
+                                <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" ><b>Motivo</b></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 600px;width:100%">    
+                    <table class="table" border="1">
+                        <tbody class="searchable4" data-filter="#f4">
+                            <c:forEach var="row" items="${vencidas.rows}">
+                                <tr style="text-align: center">
+                                    <td style="font-size: 12px;vertical-align:middle;" width="10%">
+                                        <a href="respondidas_sup.jsp?cod=${row.Id}">${row.aprobacion}</a>
+                                    </td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Plazo}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Aceptada}</td>
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td> 
+                                    <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${Math.abs(row.dias)}
+                                        <c:choose>
+                                            <c:when test="${row.dias>20}">
+                                                <span align="center" style="color:#009150; font-family: Webdings;; font-weight:bold">n</span>
+                                            </c:when>
+                                            <c:when test="${row.dias>10 && row.dias <21}">
+                                                <span align="center" style="color:yellow; font-family: Webdings;; font-weight:bold">n</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
                                             </c:otherwise>
                                         </c:choose>
                                     </td> 

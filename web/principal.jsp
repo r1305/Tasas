@@ -53,7 +53,7 @@
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal2='Red' and f.Cont=1
+            where f.Estado='Pendiente' and u.Canal2='Red' and (f.Cont=1 or f.Cont>=3)
             order by tiempo desc
         </sql:query>
         <!-- Query para las solicitudes pendiente de repechaje del canal de RED -->
@@ -89,7 +89,7 @@
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal2='FFVV' and f.Cont=1
+            where f.Estado='Pendiente' and u.Canal2='FFVV' and (f.Cont=1 or f.Cont>=3)
             order by tiempo desc
         </sql:query>
         <!-- Query para las solicitudes pendiente de repechaje del canal de FFVV -->
@@ -116,7 +116,7 @@
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal2='Red' and f.Cont=1
+            where f.Estado='Pendiente' and u.Canal2='Red' and (f.Cont=1 or f.Cont=3)
         </sql:query>
         <!-- Query para contar las solicitudes pendiente de repechaje del canal de RED -->
         <sql:query dataSource="${snapshot}" var="repe_red_n">
@@ -132,7 +132,7 @@
             FROM [Phoenix].[Formulario] f   
             left join [BD_CHIP].[Phoenix].[Usuarios] u 
             on (f.Usuario=u.Registro) 
-            where f.Estado='Pendiente' and u.Canal2='FFVV' and f.Cont=1
+            where f.Estado='Pendiente' and u.Canal2='FFVV' and (f.Cont=1 or f.Cont=3)
         </sql:query>
         <!-- Query para contar las solicitudes pendiente de repechaje del canal de FFVV -->
         <sql:query dataSource="${snapshot}" var="repe_ffvv_m">

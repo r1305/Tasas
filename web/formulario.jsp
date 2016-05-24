@@ -62,6 +62,10 @@
         <sql:query dataSource="${snapshot}" var="r">
             select COUNT(*) as numero from Phoenix.Formulario where Estado='ContraOferta' and  [Usuario]='<%=user%>'
         </sql:query>
+        <!-- query para obtener la cantidad de solicitudes vencidas del usuario logeado-->
+        <sql:query dataSource="${snapshot}" var="v">
+            select COUNT(*) as numero from Phoenix.Formulario where dias<0 and  [Usuario]='<%=user%>' and (Estado='Aceptada' or Estado='ContraOferta' or Estado='Pendiente')
+        </sql:query>
         <!--Query para mostrar las solicitudes pendientes con formato de monedas y fechas-->
         <sql:query dataSource="${snapshot}" var="result">
 
@@ -69,28 +73,54 @@
             when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','')
             when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','') 
             end As prestamo,
+            case Moneda 
+            when 'Dolares ' then '$ '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            end As cuotaI,
             convert(nvarchar(255),DAY(fecha_solicitud))+'-'+convert(nvarchar(255),MONTH(fecha_solicitud))+'-'+convert(nvarchar(255),YEAR(fecha_solicitud)) as solicitud
             FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and Estado='Pendiente' order by 1
         </sql:query>
-        <!--Query para mostrar las solicitudes aceptadas con formato de monedas y fechas-->
+        <!--Query para mostrar las solicitudes aceptadas con formato de monedas y fechas--> 
         <sql:query dataSource="${snapshot}" var="aceptada">
             SELECT *,case Moneda
             when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','')
             when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','') 
             end As prestamo,
+            case Moneda 
+            when 'Dolares ' then '$ '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            end As cuotaI,
             DATEDIFF(HH,fecha_solicitud,fecha_respuesta) as rpta,
             convert(nvarchar(255),DAY(fecha_respuesta))+'-'+convert(nvarchar(255),MONTH(fecha_respuesta))+'-'+convert(nvarchar(255),YEAR(fecha_respuesta)) as aprobacion
             FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and Estado='Aceptada' and dias >=0 order by 1
         </sql:query>
-        <!--Query para mostrar las solicitudes rechazadas con formato de monedas y fechas-->
+        <!--Query para mostrar las solicitudes contraofertas con formato de monedas y fechas-->
         <sql:query dataSource="${snapshot}" var="contra">
             SELECT *,case Moneda
             when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','')
             when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','') 
             end As prestamo,
+            case Moneda 
+            when 'Dolares ' then '$ '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            end As cuotaI,
             DATEDIFF(HH,fecha_solicitud,fecha_respuesta) as rpta,
             convert(nvarchar(255),DAY(fecha_respuesta))+'-'+convert(nvarchar(255),MONTH(fecha_respuesta))+'-'+convert(nvarchar(255),YEAR(fecha_respuesta)) as aprobacion
             FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and Estado='ContraOferta' and dias>=0 order by 1
+        </sql:query>
+        <!--Query para mostrar las solicitudes vencidas con formato de monedas y fechas-->
+        <sql:query dataSource="${snapshot}" var="vencidas">
+            SELECT *,case Moneda
+            when 'Dolares' then '$ '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Prestamo,0,0)),1),'.00','') 
+            end As prestamo,
+            case Moneda 
+            when 'Dolares ' then '$ '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            when 'Soles' then 'S/. '+replace(convert(nvarchar(20),convert(money,round(Cuota_inicial,0,0)),1),'.00','')
+            end As cuotaI,
+            DATEDIFF(HH,fecha_solicitud,fecha_respuesta) as rpta,
+            convert(nvarchar(255),DAY(fecha_respuesta))+'-'+convert(nvarchar(255),MONTH(fecha_respuesta))+'-'+convert(nvarchar(255),YEAR(fecha_respuesta)) as aprobacion
+            FROM [BD_CHIP].[Phoenix].[Formulario] where  [Usuario]='<%=user%>' and dias<0 and (Estado='Aceptada' or Estado='ContraOferta' or Estado='Pendiente') order by dias desc
         </sql:query>
         <!--Logo y banner según IBK-->
         <%Conexion c = new Conexion();%>
@@ -125,8 +155,9 @@
                 <li class="active"><a data-toggle="tab" href="#enviadas" style="color:#0060B3"><b>Enviadas (<c:forEach var="b" items="${n.rows}">${b.numero}</c:forEach>)</b></a></li>
                 <li><a data-toggle="tab" href="#aceptadas" style="color: #0060B3"><b>Aceptadas (<c:forEach var="b" items="${a.rows}">${b.numero}</c:forEach>)</b></a></li>
                 <li><a data-toggle="tab" href="#contraOfertas" style="color: #0060B3"><b>Contra Ofertas (<c:forEach var="b" items="${r.rows}">${b.numero}</c:forEach>)</b></a></li>
-                    <li><a data-toggle="tab" href="#solicitud" style="color: #0060B3"><b>Solicitud</b></a></li>
-                </ul>
+                <li><a data-toggle="tab" href="#vencidas" style="color: #0060B3"><b>Vencidas (<c:forEach var="b" items="${v.rows}">${b.numero}</c:forEach>)</b></a></li>                   
+                <li><a data-toggle="tab" href="#solicitud" style="color: #0060B3"><b>Solicitud</b></a></li>
+            </ul>
 
                 <div class="tab-content" class="tab-content" style="margin-top: 15px">
                     <!--Tab de solicitudes pendientes-->
