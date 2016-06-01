@@ -61,11 +61,28 @@ public class ServletActualizacion extends HttpServlet {
             }
         } else {
             writer = response.getWriter();
-            writer.println("<center><br>"
-                    + "<p style='font-size:22px'>El número máximo de pedidos sobre una misma solicitud es de 2 veces</p>");
-            writer.println("<center><br>"
-                    + "<p style='font-size:22px'>¡Ha excedido el límite!</p>"
-                    + "<p style='font-size:22px'>Para regresar haga clic <a href='formulario.jsp'>aquí</a></p></center>");
+            writer = response.getWriter();
+                writer.println(""
+                        + "<center><div class=\"panel panel-default\" style=\"width: 480px;height: 280px\">               "
+                        + "<table role=\"table\" border='1' align=\"center\" style=\"height: 100%;width: 100%\">"
+                        + "                    <!-- cabecera de login-->\n"
+                        + "                    <thead>\n"
+                        + "                    <th colspan=\"3\" style='background-color: #00A94E;heig:150px'>"
+                        + "                        <img src=\"img/Logo IBK verde.jpg\" alt=\"\" style='width: 192px;\n" +
+                                                    "    height: 60px;\n" +
+                                                    "    line-height: 1;'/>"
+                        + "                    </th>"
+                        + "                    </thead>"
+                        + "                    <tbody>"
+                        + "                        <tr>"
+                        + "                            <td style='text-align:center;font-size:22px'>"
+                        + "                                 <b>Ocurrió un error al registrar su solicitud"
+                        + "                                 <br>Para regresar haga click <a href='formulario.jsp'>aquí</a><b>"
+                        + "                            </td>"
+                        + "                        </tr>\n"
+                        + "                    </tbody>\n"
+                        + "                </table>"
+                        + "</div></center>");
         }
 
     }

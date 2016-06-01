@@ -371,7 +371,7 @@
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Moneda</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Plazo</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Producto</b></th>
-                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Tasa Mínima</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Tasa Aprobada</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Solicitada</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Dias Vencimiento</b></th>
                                     <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Motivo</b></th>
@@ -444,18 +444,6 @@
                                             <td>
                                                 <input class="form-control" type='text' id='dni' name="dni" required="true" maxlength="10" placeholder="Ingrese DNI">
                                                 <input type="text" value="<%=user%>" hidden="" name="user">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Score Hipotecario</td>
-                                            <td >
-                                                <select id="sh" name="sh" class="form-control">
-                                                    <option>Sin Score</option>
-                                                    <option>Alto</option>
-                                                    <option>Medio</option>
-                                                    <option>Bajo</option>
-                                                    <option>Rechazo</option>
-                                                </select>
                                             </td>
                                         </tr>
                                         <tr>
@@ -679,7 +667,7 @@
                         <div class="modal-body">
 
                             <form action="ServletActualizacionFFVV" method="post" enctype="multipart/form-data">
-                                <br>Nueva Tasa (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5"/>
+                                <br>Tasa Aprobada Vencida (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5"/>
                                 <br><input type="text" name="id" id="id2" hidden="">
                                 <br><input type="file" name="imagen"  id="imagen"/>
                                 <br>Comentario<textarea type="textarea" id="comentarioR" name="comentarioR" class="form-control" maxlength="255" placeholder="Motivo de la nueva tasa"></textarea>

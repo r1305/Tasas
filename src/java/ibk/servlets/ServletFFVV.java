@@ -41,8 +41,6 @@ public class ServletFFVV extends HttpServlet {
 
         String user = request.getParameter("user");
         String nombre = request.getParameter("nombre");
-
-        String sh = request.getParameter("sh");
         String dni = request.getParameter("dni");
         String valorI = request.getParameter("valorI");
         String prestamo = request.getParameter("prestamo");
@@ -104,27 +102,23 @@ public class ServletFFVV extends HttpServlet {
             System.out.println(repe);
             if (repe.equals("ok")|| repe.equals("")) {
                 if (a1.getSize() == 0 && a2.getSize() == 0) {
-                    ok = c.registroSolicitudFFVV(nombre.toUpperCase(), sh, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
+                    ok = c.registroSolicitudFFVV(nombre.toUpperCase(), dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user, comentario,prod);
                     c.updateVencimiento();
                 } else if (a1.getSize() == 0) {
                     String f1 = writeFile(a2);
-                    ok = c.registro1FileFFVV(nombre.toUpperCase(), sh, f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
+                    ok = c.registro1FileFFVV(nombre.toUpperCase(), f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 } else if (a2.getSize() == 0) {
                     String f1 = writeFile(a1);
-                    ok = c.registro1FileFFVV(nombre.toUpperCase(), sh, f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
+                    ok = c.registro1FileFFVV(nombre.toUpperCase(), f1, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 } else {
                     String f1 = writeFile(a1);
                     String f2 = writeFile(a2);
-                    ok = c.registroSolicitud2FilesFFVV(nombre.toUpperCase(), sh, f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
+                    ok = c.registroSolicitud2FilesFFVV(nombre.toUpperCase(), f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario,prod);
                     c.updateVencimiento();
                 }
-            } 
-
-            if (ok) {
-                response.sendRedirect("formulario_ffvv.jsp");
-            } else {
+            }else if(repe.equals("fail")){
                 writer = response.getWriter();
                 writer.println(""
                         + "<center><div class=\"panel panel-default\" style=\"width: 480px;height: 280px\">               "
@@ -147,6 +141,11 @@ public class ServletFFVV extends HttpServlet {
                         + "                    </tbody>\n"
                         + "                </table>"
                         + "</div></center>");
+                
+            }
+            
+            if (ok) {
+                response.sendRedirect("formulario_ffvv.jsp");
             }
         }
 

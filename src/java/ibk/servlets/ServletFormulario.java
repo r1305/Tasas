@@ -121,11 +121,7 @@ public class ServletFormulario extends HttpServlet {
                     ok = c.registroSolicitud2Files(nombre.toUpperCase(), f1, f2, dni, prestamo, cuotaI, adq, plazo, tasa, valorI, moneda, p, medio, mes, tipo, vivienda, motivo, segmento, cruceF, user.toUpperCase(), comentario, prod);
                     c.updateVencimiento();
                 }
-            }
-
-            if (ok) {
-                response.sendRedirect("formulario.jsp");
-            } else {
+            }else{
                 writer = response.getWriter();
                 writer.println(""
                         + "<center><div class=\"panel panel-default\" style=\"width: 480px;height: 280px\">               "
@@ -141,13 +137,17 @@ public class ServletFormulario extends HttpServlet {
                         + "                    <tbody>"
                         + "                        <tr>"
                         + "                            <td style='text-align:center;font-size:22px'>"
-                        + "                                 <b>Ya se ha ingresado una solicitud con los mismo datos"
+                        + "                                 <b>¡Ocurrió un error al registrar los datos!"
                         + "                                 <br>Para regresar haga click <a href='formulario.jsp'>aquí</a><b>"
                         + "                            </td>"
                         + "                        </tr>\n"
                         + "                    </tbody>\n"
                         + "                </table>"
                         + "</div></center>");
+            }
+
+            if (ok) {
+                response.sendRedirect("formulario.jsp");
             }
         }
 

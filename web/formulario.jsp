@@ -15,7 +15,6 @@
         <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
-        <script src="js/jquery.min.js" type="text/javascript"></script>       
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <!--scripts para validar formulario de forma automática-->
         <!--<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
@@ -285,7 +284,7 @@
                         </table>
                     </div>
                 </div>
-                <!--Tab de solicitudes rechazadas-->
+                <!--Tab de solicitudes contraofertas-->
                 <div id="contraOfertas" class="tab-pane fade" style="margin-top: 15px">
                     <div class="container" style="overflow-y: scroll;width: 100%">
                         <div class="input-group">
@@ -344,6 +343,76 @@
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="14%">${row.Motivo}</td>
                                         <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center">
                                             <a data-toggle="modal" data-id="${row.Id}" class="open-reenvio btn btn-primary" href="#reenvio">
+                                                <span class="glyphicon glyphicon-repeat"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Tab de solicitudes vencidas-->
+                <div id="vencidas" class="tab-pane fade" style="margin-left: -14px;margin-top: 15px">
+                    <div class="container" style="overflow-y: scroll;width:100%">
+                        <div class="input-group">
+                            <span class="input-group-addon" onclick="location.reload();">
+                                <span class="glyphicon glyphicon-refresh"></span>
+                                Actualizar
+                            </span>
+                            <input id="f4" type="text" class="form-control" placeholder="Ingrese consulta...">
+                        </div>
+                        <table class="table" border="1">
+                            <thead class="filters">
+                                <tr>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">
+                                        <b>Fecha de Aprobación</b>
+                                    </th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>DNI</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Monto Solicitado</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Moneda</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Plazo</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Producto</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Tasa Aprobada</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%"><b>Tasa Solicitada</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Dias Vencimiento</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%"><b>Motivo</b></th>
+                                    <th style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" ><b>Actualización de Tasa</b></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="container" style="overflow-y: scroll;margin-top: -20px;max-height: 700px;width:100%">    
+                        <table class="table" border="1">
+                            <tbody class="searchable4" data-filter="#f4">
+                                <c:forEach var="row" items="${vencidas.rows}">
+                                    <tr style="text-align: center">
+                                        <td style="font-size: 12px;vertical-align:middle;" width="10%">
+                                            <a href="respondidas_ffvv.jsp?cod=${row.Id}">${row.aprobacion}</a>
+                                        </td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Cod_doc}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.prestamo}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Moneda}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Plazo}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Producto_origen}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Tasa_Aceptada}</td>
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="10%">${row.Tasa_Solicitada}</td> 
+                                        <td style="font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${Math.abs(row.dias)}
+                                            <c:choose>
+                                                <c:when test="${row.dias>20}">
+                                                    <span align="center" style="color:#00A94E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${row.dias>10}">
+                                                    <span align="center" style="color:#FACC2E; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                                <c:when test="${row.dias<11}">
+                                                    <span align="center" style="color:red; font-family: Webdings; font-weight:bold">n</span>
+                                                </c:when>
+                                            </c:choose>
+                                        </td> 
+                                        <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" width="8%">${row.Motivo}</td>
+                                        <td style=";font-size: 12px;text-align: center;vertical-align:middle;" align="center" >
+                                            <a data-toggle="modal" data-id="${row.Id}" class="open-actualizar btn btn-primary" href="#actualizar">
                                                 <span class="glyphicon glyphicon-repeat"></span>
                                             </a>
                                         </td>
@@ -572,7 +641,7 @@
                         </div>
                         <div class="modal-body">
                             <form action="ServletRepechaje" method="post" enctype="multipart/form-data">
-                                <br>Nueva Tasa (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5" />
+                                <br>Tasa Aprobada Vencida (%)<input type="text" class="form-control" name="tasaR" id="tasaR" placeholder="Ejm: 8.5" />
                                 <br><input type="text" name="idR" id="idR" hidden="">
                                 <br><input type="file" name="imagen"  id="imagen"/>
                                 <br>Comentario<textarea type="textarea" id="comentarioR" name="comentarioR" class="form-control" maxlength="255" placeholder="Motivo de la nueva tasa"></textarea>
